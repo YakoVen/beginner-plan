@@ -1,4 +1,5 @@
 import ItemCard from "../general/item-card";
+import PublicStoreStates from "./widgets/store-pub-states";
 
 function LandingSection() {
     return (
@@ -10,6 +11,8 @@ function LandingSection() {
                     <button className="bg-black text-white py-3 px-6 rounded-lg">Commencez le shopping</button>
                     <button>Top articles</button>
                 </div>
+                <PublicStoreStates/>
+
             </div>
             <div className="flex justify-center gap-4  items-center p-20">
                 <ItemCard />

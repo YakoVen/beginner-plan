@@ -1,11 +1,18 @@
-import Image from "next/image";
-import Header from "./components/general/header";
-import LandingSection from "./components/landingpage/landing-section";
+import CategoriesPreview from "@/components/landingpage/categories-previews";
+import RatingPreview from "@/components/landingpage/ratings-preview";
+import SuggestionPreview from "@/components/landingpage/suggestions-preview";
+import WelcomSection from "@/components/landingpage/welcom-section";
+import { getArticles } from "@/service/suberbase/databasehandle";
 
-export default function Home() {
+export default async function Home() {
+
+  const articles = await getArticles();
   return (
-   <div>
-    <Header></Header>
-    <LandingSection></LandingSection>
-   </div>  );
+    <div className="">
+      <WelcomSection></WelcomSection>
+      <SuggestionPreview articles={articles} ></SuggestionPreview>
+      <CategoriesPreview articles={articles}></CategoriesPreview>
+      <RatingPreview></RatingPreview>
+    </div>
+  );
 }
