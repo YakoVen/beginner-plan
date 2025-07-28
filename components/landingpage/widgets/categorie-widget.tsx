@@ -1,4 +1,4 @@
-import tmp1 from "@/assets/tmp/1.webp";
+import tmp1 from "@/assets/tmp/1.png";
 import tmp2 from "@/assets/tmp/2.webp";
 import Image from "next/image";
 

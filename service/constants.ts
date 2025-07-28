@@ -18,7 +18,7 @@ Que vous soyez à la recherche de [bénéfice ou besoin – ex. style, confort, 
 Commencez vos achats dès maintenant et faites confiance à [Nom de votre boutique] pour vous simplifier la vie !`
 
 
-export const categories = [{name:"Assiettes",thumbnail:"" ,icon:""},{name:"Electro Menager",thumbnail:"" ,icon:""} , {name:"Serviette",thumbnail:"" ,icon:""} , {name:"Drap",thumbnail:"" ,icon:""},{name:"Decoration",thumbnail:"" ,icon:""}]
+export const categories = [{name:"Vetement",thumbnail:"" ,icon:""},{name:"Accessoire",thumbnail:"" ,icon:""} , {name:"Electronique",thumbnail:"" ,icon:""},{name:"Autre",thumbnail:"" ,icon:""}]
 
 
 export const welcom_page_info  ={

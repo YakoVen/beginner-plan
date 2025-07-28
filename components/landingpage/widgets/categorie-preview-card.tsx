@@ -39,7 +39,7 @@ function CategorieCard({ articles, CategorieTitle, CategorieThumbnail, Icon }: {
 
                 <div className="flex gap-2 py-6 ">
                     {products.filter((e) => e.active).map((e, i) =>
-                        <div key={i} className="rounded-xl overflow-hidden ">
+                        <div key={i} className="rounded-xl overflow-hidden h-[75px] w-[75px]">
                             <Image src={e.thumbnail} height={75} width={75} alt="" onClick={()=>nav.replace("/articles/"+e.id)} />
                         </div>)}
                     {products.filter((e) => e.active).length == 0 &&

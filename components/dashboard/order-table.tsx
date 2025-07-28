@@ -66,7 +66,7 @@ function OrderTable() {
             </div>
 
 
-
+{/*
             <div>
 
                 {filtred.map((e, i) => (
@@ -100,13 +100,14 @@ function OrderTable() {
                 )
                 }
             </div>
-
-            {/*
+*/}
+            
             <DataTable value={filtred}  tableStyle={{ minWidth: '50rem' }}>
                 <Column field="id" header="Id" bodyClassName='max-w-20 overflow-auto' sortable></Column>
                 <Column field="name" header="Nom"></Column>
                 <Column field="phone" header="Telephone"></Column>
                 <Column field="command" header="Command" body={(e) => {
+console.log(e);
 
                     return <div className='flex gap-2 items-center '>
                         <div className='h-12  rounded-xl overflow-hidden  w-16 relative'>
@@ -134,7 +135,7 @@ function OrderTable() {
 
 
             </DataTable>
-            */}
+            
 
             {command.length > 0 && <CommandPreview article_id={command}
                 close={() => setCommand("")} />
