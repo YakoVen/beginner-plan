@@ -5,6 +5,7 @@ import Link from "next/link";
 import FeaturedCard from "./widgets/item-card";
 import ItemCard from "../general/item-card";
 import PublicStoreStates from "./widgets/store-pub-states";
+import { store_name, welcom_page_info } from "@/service/constants";
 
 
 function WelcomSection() {
@@ -12,12 +13,12 @@ function WelcomSection() {
         <div className="relative group h-screen w-screen lg:px-10 mx-auto flex justify-center items-center">
             <div className="flex w-screen p-12">
                 <div className="flex-grow flex flex-col justify-center" >
-                    <div className="text-6xl"> Your Store</div>
+                    <div className="text-6xl"> {store_name}</div>
 
-                    <div className="text-4xl"> This should be you slogan</div>
+                    <div className="text-4xl"> {welcom_page_info.short_slogan}</div>
                     <PublicStoreStates />
                 </div>
-                <div>
+                <div className=" max-sm:hidden justify-center flex ">
                     <ItemCard></ItemCard>
                 </div>
             </div>

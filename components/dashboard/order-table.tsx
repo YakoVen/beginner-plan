@@ -18,16 +18,13 @@ function OrderTable() {
     const [orders, setOrders] = useState<order[]>([])
     const [command, setCommand] = useState("")
 
-    const [amplify, setAmplify] = useState<order|null>(null)
+    const [amplify, setAmplify] = useState<order | null>(null)
+    const [changed, setChanged] = useState(false);
 
-    /*[
-            { id: "3948294903",date:Date.now().toString(), name: "yacine yacine", phone: "0672811903", command: "349934", quantite: 4, adress: "Boumerdes,Boumerdes", state: 0 }
-            , { id: "9875548975",date:Date.now().toString(), name: "rayan rayan", phone: "0549915903", command: "349934", quantite: 1, adress: "Alger,Bourdj Kifan", state: 2 }
 
-        ]
-*/
+
     const [filtred, setFiltred] = useState<order[]>([]);
-    const states = ["⚠️ en attend", "✅ envoyee", "❌ retour",];
+    const states = ["⚠️ en attend", "✅ Confirmée", "📤 envoyee", "❌ retour"];
 
     const [dateFilter, setDateFilter] = useState<Nullable<Date>>(null)
     const [nameFilter, setNameFilter] = useState("")
@@ -37,26 +34,26 @@ function OrderTable() {
     useEffect(
         () => {
 
-            if (orders.length == 0)
+            if (orders.length == 0 || changed == true)
                 getOrders().then((e) => {
                     setOrders(e);
                 }
                 );
             let f = orders;
             if (nameFilter.length > 0)
-                f = f.filter((e:order) => e.name.includes(nameFilter));
+                f = f.filter((e: order) => e.name.includes(nameFilter));
             if (dateFilter != null)
-                
-                f = f.filter((e:order) =>{
+
+                f = f.filter((e: order) => {
                     return new Date(e.date).toDateString() == dateFilter.toDateString()
                 }
-            );
-            if (stateFilter >=0)
+                );
+            if (stateFilter >= 0)
                 f = f.filter((e) => e.state == stateFilter);
 
             setFiltred(f);
 
-        }, [orders, dateFilter, nameFilter, stateFilter]
+        }, [orders, changed, dateFilter, nameFilter, stateFilter]
     )
 
     return (
@@ -68,8 +65,45 @@ function OrderTable() {
                 <Dropdown placeholder='etat' className='shadow border border-gray-500 px-3 ' value={states[stateFilter]} onChange={(e) => setStateFilter(states.indexOf(e.value))} options={["", ...states]} optionLabel="state" />
             </div>
 
-            <DataTable value={filtred} tableStyle={{ minWidth: '50rem' }}>
-                <Column field="id" header="Id" bodyClassName='max-w-20 overflow-auto'></Column>
+
+
+            <div>
+
+                {filtred.map((e, i) => (
+                    <div className='flex p-3 text-center items-center gap-3 justify-between'>
+                        <div className='w-20 text-xs overflow-x-auto'>{e.id} </div>
+                        <div className=' overflow-x-auto'> {e.name} </div>
+                        <div className=' overflow-x-auto'> {e.phone} </div>
+                        <div className=' overflow-x-auto'> <div className='flex gap-2 items-center '>
+                            <div className='h-12  rounded-xl overflow-hidden  w-16 relative'>
+                                <Image alt='' fill src={e.command.thumb} className='object-cover' />
+                            </div>
+                            <div className='w-36 overflow-hidden'>
+                                {e.command.title.slice(0, 15)}
+                            </div>
+                            <button onClick={() => setCommand(e.command.article_id)} className='p-3 rounded-lg border border-black hover:bg-black hover:text-white'>voire </button></div>
+                        </div>
+
+
+
+                        <div className=' overflow-x-auto'> {e.adress} </div>
+                        <div className=' overflow-x-auto'> 
+                            <Dropdown value={states[e.state]} onChange={async (selected) => {
+                            const n = e;
+                            n.state = states.indexOf(selected.value);
+                            await saveOrder(n)
+                            setChanged(true)
+
+                        }} options={states} optionLabel="state" /></div>
+
+                    </div>)
+                )
+                }
+            </div>
+
+            {/*
+            <DataTable value={filtred}  tableStyle={{ minWidth: '50rem' }}>
+                <Column field="id" header="Id" bodyClassName='max-w-20 overflow-auto' sortable></Column>
                 <Column field="name" header="Nom"></Column>
                 <Column field="phone" header="Telephone"></Column>
                 <Column field="command" header="Command" body={(e) => {
@@ -91,12 +125,7 @@ function OrderTable() {
                         const n = p;
                         n.state = states.indexOf(e.value);
                         await saveOrder(n)
-                        setOrders(orders.map((o) => {
-                            if (o.id == p.id)
-                                return n;
-                            else
-                                return o;
-                        }))
+                      setChanged(true)
 
                     }} options={states} optionLabel="state" />
                 }}></Column>
@@ -105,11 +134,12 @@ function OrderTable() {
 
 
             </DataTable>
+            */}
 
-            {command.length > 0 && <CommandPreview  article_id={command}
+            {command.length > 0 && <CommandPreview article_id={command}
                 close={() => setCommand("")} />
             }
-              {amplify  && <CommandAmplifyed order={amplify} article_id={amplify.command.article_id}
+            {amplify && <CommandAmplifyed order={amplify} article_id={amplify.command.article_id}
                 close={() => setAmplify(null)} />
             }
         </div>

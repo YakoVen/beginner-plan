@@ -33,10 +33,7 @@ function ArticleEditor({ article }: { article: article | null }) {
 
 
   const nav = useRouter();
-  useEffect(() => {
-    console.log(article?.screenshots.length)
-    console.log(screenshots.length);
-  })
+
 
   const DeleteScreenShot = async (i: number) => {
 
@@ -64,8 +61,8 @@ function ArticleEditor({ article }: { article: article | null }) {
         setUploaded(0);
 
         //upload thumbnail and save the url
-
-        const thumbnail_file = await urlToFile(thumbnail,"file")
+        console.log("UPLOADING THUMBNAILE ");
+        const thumbnail_file = await urlToFile(thumbnail, "file")
         const thumb_upload = await supabase.storage
           .from("articles")
           .upload(id + "/thumbnail", thumbnail_file, { upsert: true });
@@ -73,31 +70,42 @@ function ArticleEditor({ article }: { article: article | null }) {
           thumb_url = supabase.storage
             .from("articles")
             .getPublicUrl(thumb_upload.data.path).data.publicUrl;
+        if (thumb_upload.error) console.log(thumb_upload.error);
+
+        console.log("UPLOADING THUMBNAILE DONE ");
+
+
 
         // upload screenshots
-
+        console.log("UPLOADING SCREENSHOTS ");
         const merged = screenshots.concat(newscreenshots)
         for (let i = 0; i < merged.length; i++) {
 
           const sc = merged[i];
           const file = await urlToFile(sc, i + "");
+
           const sc_upload = await supabase.storage
             .from("articles")
-            .upload(id + "/screenshots/" + i, file, { upsert: true });
+            .upload(id + "/screenshots/" + i, file, { upsert: true })
 
           setUploaded(uploaded + 1);
-          
+
           if (sc_upload.data)
             sc_url.push(
               supabase.storage
                 .from("articles")
                 .getPublicUrl(sc_upload.data.path).data.publicUrl
             );
+          if (sc_upload.error) console.log(sc_upload.error);
+
         }
+        console.log("UPLOADING SCREENSHOTS DONE ");
+
+
         if (thumb_url.length > 0) {
           //create data
           const article_data: article = {
-            id: article?article.id:id,
+            id: article ? article.id : id,
             title: title,
             disc: description,
             price: price,
@@ -112,7 +120,7 @@ function ArticleEditor({ article }: { article: article | null }) {
           setSaving(false);
           nav.replace("/dashboard/articles")
         } else {
-          alert("Erreur ... vérifiez votre connexion. ");
+          alert("Uploading error: Vérifiez votre connexion. ");
           setSaving(false);
         }
       } else {
@@ -121,7 +129,7 @@ function ArticleEditor({ article }: { article: article | null }) {
       }
     } catch (e) {
       console.log(e);
-      
+
       alert(" Erreur ... vérifiez votre connexion.  ");
       setSaving(false);
     }
@@ -171,15 +179,15 @@ function ArticleEditor({ article }: { article: article | null }) {
       <Dropdown
         placeholder="etat"
         className="shadow border w-full border-gray-300 px-3 "
-        value={categorie==-1 ? 0 :categories[categorie].name}
-        onChange={(e) => setCategorie(categories.indexOf(categories.filter((c)=>c.name==e.value)[0]))}
-        options={categories.map((e)=>e.name)}
+        value={categorie == -1 ? 0 : categories[categorie].name}
+        onChange={(e) => setCategorie(categories.indexOf(categories.filter((c) => c.name == e.value)[0]))}
+        options={categories.map((e) => e.name)}
         optionLabel="state"
       />
 
       <div className="p-3 border border-gray-400 w-full  flex flex-wrap gap-3 justify-center">
         {screenshots.length + newscreenshots.length == 0 && <div>pas de photos</div>}
-        
+
         {screenshots.map((e, i) => {
           if (e.length > 0)
             return (
@@ -232,17 +240,16 @@ function ArticleEditor({ article }: { article: article | null }) {
 
         className="p-3 border border-green-400 rounded-xl bg-green-400 text-center text-zinc-50 font-extrabold"
         onChange={(e) => {
-          if (e.target.files)
-          {
-            const add:string[] = [];
+          if (e.target.files) {
+            const add: string[] = [];
             for (let i = 0; i < e.target.files.length; i++) {
               const element = e.target.files[i];
               add.push(URL.createObjectURL(element))
-              
+
             }
             setNewsceenshots((prevItems) => [...prevItems, ...add]);
           }
-          }}
+        }}
       />
       <InputText
         className="shadow border w-full p-3 border-gray-300"

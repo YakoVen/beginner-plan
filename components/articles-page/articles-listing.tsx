@@ -35,7 +35,7 @@ function ArticlesListing({ articles }: { articles: article[] }) {
     }, [data])
 
     return (
-        <div className="flex min-h-screen   items-stretch relative ">
+        <div className="flex  overflow-y-auto h-screen   items-stretch relative ">
             <FilterBar max={max} value={{ categories: selected, price: price }} onSelected={setSelected} onPrice={setPrice}></FilterBar>
 
             <div className="flex-grow flex flex-col    pt-20  ">
