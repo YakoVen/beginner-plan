@@ -52,7 +52,7 @@ function OrderTable() {
 
             f.map(e => console.log(e.date));
 
-            f.sort((a, b) => Date.parse( b.date.toString()) - Date.parse( a.date.toString()));
+            f.sort((a, b) => Date.parse(b.date.toString()) - Date.parse(a.date.toString()));
 
             setFiltred(f);
             setChanged(false);
@@ -77,7 +77,7 @@ function OrderTable() {
                 <div >
 
                     {filtred.map((e, i) => (
-                        <div key={i} className='overflow-auto w-screen'>
+                        <div key={i} className='overflow-auto w-screen px-2'>
                             <div className='flex p-3 border text-center items-center gap-3 justify-between w-fit min-w-full'>
                                 <div className='w-[50px] text-xs overflow-x-auto'>{e.id} </div>
                                 <div className='min-w-[100px]   overflow-x-auto '> {e.name} </div>
@@ -87,7 +87,7 @@ function OrderTable() {
                                         <Image alt='' fill src={e.command.thumb} className='object-cover' />
                                     </div>
                                     <div className='w-36 overflow-hidden'>
-                                        {e.command.title.slice(0, 15) + " × " } <span className='font-extrabold text-lg text-green-600'>{e.quantity}</span> 
+                                        {e.command.title.slice(0, 15) + " × "} <span className='font-extrabold text-lg text-green-600'>{e.quantity}</span>
                                     </div>
                                     <button onClick={() => setCommand(e.command.article_id)} className='p-3 rounded-lg border border-black hover:bg-black hover:text-white'>voire </button></div>
                                 </div>
@@ -105,8 +105,10 @@ function OrderTable() {
                                             setOrders(e);
                                         });
 
-                                    }} options={states} optionLabel="state" /></div>
+                                    }} options={states} optionLabel="state" />
+                                </div>
 
+                                <div><button onClick={() => setAmplify(e)} className='bg-yellow-400 p-3  rounded-xl'> Amplifier </button> </div>
                             </div>
                         </div>)
                     )
