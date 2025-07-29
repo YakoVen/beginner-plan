@@ -1,25 +1,23 @@
 "use client"
 import { supabase } from "@/service/suberbase/superbase";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
 
     const [logged, setLogged] = useState(false);
-
-
     const [email, setEmail] = useState("");
-
     const [password, setPassword] = useState("");
+    const pathname = usePathname();
 
     useEffect(() => {
 
+
         const em = localStorage.getItem("e");
-        const pass =  localStorage.getItem("t");
-        if(em!=null && pass!=null)
-            supabase.auth.signInWithPassword({email:em,password:pass}).then((e)=>setLogged(e.data.session!=null))
-
-
+        const pass = localStorage.getItem("t");
+        if (em != null && pass != null)
+            supabase.auth.signInWithPassword({ email: em, password: pass }).then((e) => setLogged(e.data.session != null))
     }, [])
 
 
@@ -41,7 +39,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     </div>
 
                     <button onClick={async (e: React.MouseEvent<HTMLButtonElement>) => {
-                        const but =  e.target as HTMLButtonElement;
+                        const but = e.target as HTMLButtonElement;
                         but.disabled = true;
                         const { data } = await supabase.auth.signInWithPassword({ email: email, password: password });
                         const l = data.session != null;
@@ -59,10 +57,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 </div>
             </div>}
             {logged && <div className="pt-20">
-                <div className="text-xl flex  border-b">
+                <div className="text-xl flex gap-3  pt-4">
 
-                    <Link href={"/dashboard/"} className=" text-center w-1/2 px-6 py-3">Commandes</Link>
-                    <Link href={"/dashboard/articles"} className="px-6 py-3  text-center border-s w-1/2">Articles</Link>
+                    <Link href={"/dashboard/"} className={(pathname == "/dashboard" ? "bg-blue-500" : "bg-blue-200") + " text-center w-1/2 px-6 py-3  rounded-lg hover:bg-blue-700 text-white "}>Commandes</Link>
+                    <Link href={"/dashboard/articles"} className={(pathname == "/dashboard/articles" ? "bg-blue-500" : "bg-blue-200") + " px-6 py-3  text-center border-s w-1/2 rounded-lg hover:bg-blue-700 text-white"}>Articles</Link>
                 </div>
                 {children}</div>}
 

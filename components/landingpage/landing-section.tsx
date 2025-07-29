@@ -1,4 +1,4 @@
-import ItemCard from "../general/item-card";
+import ItemCard from "../general/featured-carousel";
 import PublicStoreStates from "./widgets/store-pub-states";
 
 function LandingSection() {

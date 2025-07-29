@@ -2,8 +2,8 @@ import Image from "next/image";
 import bg from "@/assets/bgs/pot-544071_1920.jpg"
 import icon from "@/assets/icon/icon.png";
 import Link from "next/link";
-import FeaturedCard from "./widgets/item-card";
-import ItemCard from "../general/item-card";
+import FeaturedCard from "../general/featured-carousel";
+import ItemCard from "../general/featured-carousel";
 import PublicStoreStates from "./widgets/store-pub-states";
 import { store_name, welcom_page_info } from "@/service/constants";
 

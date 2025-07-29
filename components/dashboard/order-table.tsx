@@ -1,6 +1,5 @@
 "use client"
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
+
 import { useEffect, useState } from 'react';
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
@@ -34,7 +33,7 @@ function OrderTable() {
     useEffect(
         () => {
 
-            if (orders.length == 0 || changed == true)
+            if (orders.length == 0)
                 getOrders().then((e) => {
                     setOrders(e);
                 }
@@ -51,64 +50,76 @@ function OrderTable() {
             if (stateFilter >= 0)
                 f = f.filter((e) => e.state == stateFilter);
 
-            setFiltred(f);
+            f.map(e => console.log(e.date));
 
-        }, [orders, changed, dateFilter, nameFilter, stateFilter]
+            f.sort((a, b) => Date.parse( b.date.toString()) - Date.parse( a.date.toString()));
+
+            setFiltred(f);
+            setChanged(false);
+
+        }, [orders, dateFilter, nameFilter, stateFilter]
     )
 
     return (
-        <div className='py-6'>
+        <div className='py-6 px-3'>
             <div className='text-3xl'>Les Commandes</div>
-            <div className='p-3 flex gap-3 justify-center'>
-                <InputText className="shadow border border-gray-500 px-3" value={nameFilter} placeholder='name' onChange={(e) => setNameFilter(e.target.value)} />
-                <Calendar value={dateFilter} className='shadow px-3 border border-gray-500' placeholder='Filtre de date' onChange={(e) => { setDateFilter(e.value) }} />
-                <Dropdown placeholder='etat' className='shadow border border-gray-500 px-3 ' value={states[stateFilter]} onChange={(e) => setStateFilter(states.indexOf(e.value))} options={["", ...states]} optionLabel="state" />
+            <div className='p-3 max-sm:fixed max-sm:bottom-0 max-sm:pb-20 bg-white w-full left-0 max-sm:border ' >
+                <div>Filters </div>
+                <div className=' flex gap-3  justify-center flex-wrap'>
+                    <InputText className="shadow border border-gray-500 px-3" value={nameFilter} placeholder='name' onChange={(e) => setNameFilter(e.target.value)} />
+                    <Calendar value={dateFilter} className='shadow px-3 border border-gray-500' placeholder='Filtre de date' onChange={(e) => { setDateFilter(e.value) }} />
+                    <Dropdown placeholder='etat' className='shadow border border-gray-500 px-3 ' value={states[stateFilter]} onChange={(e) => setStateFilter(states.indexOf(e.value))} options={["", ...states]} optionLabel="state" />
+                </div>
             </div>
 
 
-{/*
-            <div>
+            {
+                <div >
 
-                {filtred.map((e, i) => (
-                    <div className='flex p-3 text-center items-center gap-3 justify-between'>
-                        <div className='w-20 text-xs overflow-x-auto'>{e.id} </div>
-                        <div className=' overflow-x-auto'> {e.name} </div>
-                        <div className=' overflow-x-auto'> {e.phone} </div>
-                        <div className=' overflow-x-auto'> <div className='flex gap-2 items-center '>
-                            <div className='h-12  rounded-xl overflow-hidden  w-16 relative'>
-                                <Image alt='' fill src={e.command.thumb} className='object-cover' />
+                    {filtred.map((e, i) => (
+                        <div key={i} className='overflow-auto w-screen'>
+                            <div className='flex p-3 border text-center items-center gap-3 justify-between w-fit min-w-full'>
+                                <div className='w-[50px] text-xs overflow-x-auto'>{e.id} </div>
+                                <div className='min-w-[100px]   overflow-x-auto '> {e.name} </div>
+                                <div className=' overflow-x-auto '> {e.phone} </div>
+                                <div className=' overflow-x-auto'> <div className='flex gap-2 items-center '>
+                                    <div className='h-12  rounded-xl overflow-hidden  w-16 relative'>
+                                        <Image alt='' fill src={e.command.thumb} className='object-cover' />
+                                    </div>
+                                    <div className='w-36 overflow-hidden'>
+                                        {e.command.title.slice(0, 15) + " × " } <span className='font-extrabold text-lg text-green-600'>{e.quantity}</span> 
+                                    </div>
+                                    <button onClick={() => setCommand(e.command.article_id)} className='p-3 rounded-lg border border-black hover:bg-black hover:text-white'>voire </button></div>
+                                </div>
+
+
+
+                                <div className=' min-w-[100px] md:w-60 overflow-x-auto'> {e.adress} </div>
+                                <div className=' overflow-x-auto'>
+                                    <Dropdown value={states[e.state]} onChange={async (selected) => {
+                                        const n = e;
+                                        n.state = states.indexOf(selected.value);
+                                        await saveOrder(n)
+                                        setChanged(true)
+                                        getOrders().then((e) => {
+                                            setOrders(e);
+                                        });
+
+                                    }} options={states} optionLabel="state" /></div>
+
                             </div>
-                            <div className='w-36 overflow-hidden'>
-                                {e.command.title.slice(0, 15)}
-                            </div>
-                            <button onClick={() => setCommand(e.command.article_id)} className='p-3 rounded-lg border border-black hover:bg-black hover:text-white'>voire </button></div>
-                        </div>
+                        </div>)
+                    )
+                    }
+                </div>
+            }
 
-
-
-                        <div className=' overflow-x-auto'> {e.adress} </div>
-                        <div className=' overflow-x-auto'> 
-                            <Dropdown value={states[e.state]} onChange={async (selected) => {
-                            const n = e;
-                            n.state = states.indexOf(selected.value);
-                            await saveOrder(n)
-                            setChanged(true)
-
-                        }} options={states} optionLabel="state" /></div>
-
-                    </div>)
-                )
-                }
-            </div>
-*/}
-            
-            <DataTable value={filtred}  tableStyle={{ minWidth: '50rem' }}>
+            {
+  /*          <DataTable value={filtred}  tableStyle={{ minWidth: '50rem' }}>
                 <Column field="id" header="Id" bodyClassName='max-w-20 overflow-auto' sortable></Column>
                 <Column field="name" header="Nom"></Column>
                 <Column field="phone" header="Telephone"></Column>
                 <Column field="command" header="Command" body={(e) => {
-console.log(e);
-
                     return <div className='flex gap-2 items-center '>
                         <div className='h-12  rounded-xl overflow-hidden  w-16 relative'>
                             <Image alt='' fill src={e.command.thumb} className='object-cover' />
@@ -136,7 +147,7 @@ console.log(e);
 
             </DataTable>
             
-
+*/}
             {command.length > 0 && <CommandPreview article_id={command}
                 close={() => setCommand("")} />
             }

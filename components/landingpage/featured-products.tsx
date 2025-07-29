@@ -1,4 +1,4 @@
-import FeaturedCard from "./widgets/featured-card";
+import FeaturedCard from "./widgets/item-card";
 
 function FeaturedProducts() {
     return (
