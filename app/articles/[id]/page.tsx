@@ -1,6 +1,7 @@
 import { PageProps } from "@/.next/types/app/layout";
 import OrderCard from "@/components/article-page/order-card";
 import Presentation from "@/components/article-page/presentation";
+import { store_name } from "@/service/constants";
 import { getArticle } from "@/service/suberbase/databasehandle";
 
 
@@ -11,7 +12,7 @@ export async function generateMetadata({ params }:PageProps) {
     const data = await getArticle(id);
 
     return {
-        title: `${data.title} | MaBelleCuisine`,
+        title: `${data.title} | ${store_name}` ,
         description: data.disc,
         openGraph: {
             title: data.title,
