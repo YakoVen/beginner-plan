@@ -8,9 +8,9 @@ const nextConfig: NextConfig = {
   },
   
   
-  images: {
-    domains: ["fbnchcayaihfvxvgdtbr.supabase.co"]
-  }
+   images: {
+    domains: ['fbnchcayaihfvxvgdtbr.supabase.co'],
+  },
 };
 
 export default nextConfig;

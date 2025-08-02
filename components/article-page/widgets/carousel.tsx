@@ -37,7 +37,7 @@ function Carousel({ images }: carousel) {
               />
             );
           })}
-          {images.length==0 && <div className="text-center opacity-35"> pas d &apos image </div>}
+          {images.length==0 && <div className="text-center opacity-35"> pas d &apos; image </div>}
         </div>
       </div>{" "}
     </div>

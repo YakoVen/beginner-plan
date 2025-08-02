@@ -1,8 +1,9 @@
 export const store_name = "Your Store"
-
+export const store_url= "basic-store-plan.vercel.app"
 
 export const logo  = ""
 
+export const delivery_price = 500;
 
 export const store_description = 
 `🛍️ Bienvenue chez ${store_name} – Votre boutique en ligne de confiance pour [type de produits ou niche]

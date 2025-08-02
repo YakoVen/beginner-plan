@@ -8,6 +8,7 @@ import wilaya_data from "@/assets/json/wilaya.json"
 import commune_data from "@/assets/json/commune.json"
 import { order } from '@/interfaces/order';
 import { saveOrder } from '@/service/suberbase/databasehandle';
+import { delivery_price } from '@/service/constants';
 function OrderCard({ article }: { article: article }) {
     const [name, setName] = useState("");
     const [secname, setSecName] = useState("");
@@ -69,7 +70,7 @@ function OrderCard({ article }: { article: article }) {
 
             </div>
             <div className="text-end p-3">
-                prix total : <span className='font-bold'>{" " + article.price + " dzd"} </span> +frais de livraison
+                prix total : <span className='font-bold'>{" " + article.price + " dzd"} </span> + <span className='text-sm'>{delivery_price + " dzd frais de livraison"} </span>
             </div>
             <div>
                 <button disabled={saving||incomplete} onClick={PlaceOrder} className="disabled:opacity-20 p-3 w-full border rounded-xl border-black text-xl disabled:hover:bg-white disabled:hover:text-black hover:bg-black hover:text-white"> Commendez! </button>
