@@ -1,13 +1,9 @@
+import { PageProps } from "@/.next/types/app/layout";
 import OrderCard from "@/components/article-page/order-card";
 import Presentation from "@/components/article-page/presentation";
 import { store_name, store_url } from "@/service/constants";
 import { getArticle } from "@/service/suberbase/databasehandle";
 
-type PageProps = {
-    params: {
-        id: string;
-    };
-};
 // ✅ Générer les métadonnées dynamiquement (SEO dynamique)
 export async function generateMetadata({ params }:PageProps) {
     const { id } = await params;

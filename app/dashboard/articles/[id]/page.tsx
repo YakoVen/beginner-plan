@@ -1,11 +1,7 @@
 import ArticleEditor from "@/components/dashboard/article-editor";
 import { getArticle } from "@/service/suberbase/databasehandle";
 
-type PageProps = {
-    params: {
-        id: string;
-    };
-};
+import { PageProps } from "@/.next/types/app/layout";
 async function EditorPage({ params }:PageProps) {
 
 
