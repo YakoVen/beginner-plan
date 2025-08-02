@@ -20,8 +20,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             supabase.auth.signInWithPassword({ email: em, password: pass }).then((e) => setLogged(e.data.session != null))
     }, [])
 
-
-
     return (
 
         <section className="">
