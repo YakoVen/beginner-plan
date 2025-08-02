@@ -49,6 +49,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         }
                         setLogged(l);
 
+//testing ----- qsd
+
                         but.disabled = false;
 
                     }} className="p-3 border border-black   hover:bg-black hover:text-white disabled:opacity-45"> Login </button>
