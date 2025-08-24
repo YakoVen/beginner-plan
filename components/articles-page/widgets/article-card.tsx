@@ -1,32 +1,56 @@
-
 import { article } from "@/interfaces/article";
 import Image from "next/image";
 import Link from "next/link";
 
 function ArtcileCard({ article }: { article: article }) {
-    return (
-        <div className="group min-w-[250px] w-[300px] md:w-[250px] md:min-w-[300px] max-w-[98vw]   p-3 rounded-xl" style={{ boxShadow: "0px 0px 20px #00000030" }}>
+  return (
+    <div
+      className="group w-full sm:w-[280px] md:w-[250px] max-w-[98vw] 
+                 flex flex-col rounded-xl overflow-hidden p-3 bg-white"
+      style={{ boxShadow: "0px 0px 20px #00000030" }}
+    >
+      {/* Thumbnail */}
+      <div className="relative w-full h-40 sm:h-48 md:h-52 rounded-lg overflow-hidden bg-zinc-200">
+        <Image
+          src={article.thumbnail}
+          alt={article.title}
+          fill
+          className="object-cover group-hover:scale-110 transition-transform duration-500"
+        />
+      </div>
 
-            <div className="bg-zinc-200 h-52  max-sm:h-32  rounded-lg relative overflow-hidden ">
-                <Image className="object-cover group-hover:scale-110" src={article.thumbnail} fill alt="fill" />
-            </div>
-
-            <div className="p-1">
-                <div className=" max-sm:h-14 font-bold  flex items-center h-20  ">{article.title.slice(0,50).toUpperCase()}</div>
-
-                <div className="w-full text-sm max-sm:text-xs  shadow-inner px-2 h-20 max-sm:h-32 flex justify-center items-center bg-slate-300 bg-opacity-15 rounded-xl  max-sm:text-xs shadow-gray-300  ">
-                    {article.disc.slice(0, 100) + "..."}
-                </div>
-                <div className="flex justify-between p-3 items-baseline">
-                    <div className="text-xl ">Prix:</div>
-                    <div className="p-2   text-sm rounded-xl text-white bg-black font-bold ">{article.price + " "}dzd</div>
-                </div>
-                <div className="flex justify-center">
-                    <Link href={"/articles/" + article.id} className="font-extrabold border border-black rounded-lg px-5 py-2 hover:text-white hover:bg-black ">Placez votre commande</Link>
-                </div>
-            </div>
+      {/* Content */}
+      <div className="p-2 flex flex-col flex-grow">
+        {/* Title */}
+        <div className="font-bold text-sm sm:text-base md:text-lg flex items-center min-h-[3rem] line-clamp-2">
+          {article.title.toUpperCase()}
         </div>
-    );
+
+        {/* Description */}
+        <div className="mt-2 w-full text-xs sm:text-sm shadow-inner px-3 py-2 flex justify-center items-center bg-slate-300 bg-opacity-15 rounded-xl shadow-gray-300 line-clamp-3">
+          {article.disc}
+        </div>
+
+        {/* Price */}
+        <div className="flex justify-between items-center mt-3">
+          <span className="text-sm sm:text-base font-medium">Prix:</span>
+          <span className="px-3 py-1 text-sm sm:text-base rounded-xl text-white bg-black font-bold">
+            {article.price} dzd
+          </span>
+        </div>
+
+        {/* CTA */}
+        <div className="flex justify-center mt-4">
+          <Link
+            href={`/articles/${article.id}`}
+            className="text-xs sm:text-sm md:text-base font-extrabold border border-black rounded-lg px-4 py-2 hover:text-white hover:bg-black transition"
+          >
+            Placez votre commande
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default ArtcileCard;
