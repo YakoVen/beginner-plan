@@ -4,6 +4,9 @@ import SuggestionPreview from "@/components/landingpage/suggestions-preview";
 import WelcomSection from "@/components/landingpage/welcom-section";
 import { getArticles } from "@/service/suberbase/databasehandle";
 
+export async function getServerSideProps() {
+  return { props: {} };
+}
 export default async function Home() {
 
   const articles = await getArticles();

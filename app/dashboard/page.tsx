@@ -1,5 +1,10 @@
 import OrderTable from "@/components/dashboard/order-table";
 
+
+export async function getServerSideProps() {
+  return { props: {} };
+}
+
 async function DashboardPage() {
 
 

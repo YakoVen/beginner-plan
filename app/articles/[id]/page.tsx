@@ -29,7 +29,9 @@ export async function generateMetadata({ params }:PageProps) {
         },
     };
 }
-
+export async function getServerSideProps() {
+  return { props: {} };
+}
 async function AriclePage({ params }:PageProps) {
 
     const { id } = await params;

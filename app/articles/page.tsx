@@ -2,6 +2,11 @@
 import { getArticles } from "@/service/suberbase/databasehandle";
 import ArticlesListing from "@/components/articles-page/articles-listing";
 import { Suspense } from "react";
+
+
+export async function getServerSideProps() {
+  return { props: {} };
+}
 async function AriclesPage() {
 
   const articles = await getArticles()

@@ -2,6 +2,10 @@ import ArticleEditor from "@/components/dashboard/article-editor";
 import { getArticle } from "@/service/suberbase/databasehandle";
 
 import { PageProps } from "@/.next/types/app/layout";
+
+export async function getServerSideProps() {
+  return { props: {} };
+}
 async function EditorPage({ params }:PageProps) {
 
 
