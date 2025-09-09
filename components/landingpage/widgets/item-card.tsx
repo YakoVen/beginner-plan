@@ -1,29 +1,68 @@
 import { article } from "@/interfaces/article";
 import Image from "next/image";
-import Link from "next/link";
+
+// Assumption: Your 'article' interface will now include originalPrice, rating, and salesCount.
+// For example:
+// interface article {
+//     id: number;
+//     title: string;
+//     thumbnail: string;
+//     price: number; // This will be the sale price
+//     originalPrice: number; // The price to be struck through
+//     rating: number;
+//     salesCount: number;
+//     // disc is no longer used in this component
+// }
 
 function FeaturedCard({ article }: { article: article }) {
     return (
-        <div className="group  min-w-[250px]  w-[300px] md:w-[250px] md:min-w-250px] max-w-[98vw]   p-3 rounded-xl" style={{ boxShadow: "0px 0px 20px #00000030" }}>
-            <div className="bg-zinc-200 max-sm:h-44 mb-4 h-40 rounded-lg relative overflow-hidden  ">
-                <Image className="object-cover group-hover:scale-110" src={article.thumbnail} fill alt="fill" />
+        // Set the direction to right-to-left for proper Arabic text alignment
+        <div
+            dir="rtl"
+            className="group w-full max-w-xs bg-white p-3 rounded-lg shadow-md flex-shrink-0 flex flex-col"
+        >
+            {/* Thumbnail */}
+            <div className="bg-zinc-200 h-44 mb-3 rounded-md relative overflow-hidden">
+                <Image
+                    className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
+                    src={article.thumbnail}
+                    fill
+                    alt={article.title}
+                />
             </div>
-            <div>
-               
 
-                <div className=" font-bold h-16 items-center  flex overflow-auto max-sm:h-11 mb-4 ">{article.title.toUpperCase().slice(0, 40) + (article.title.length > 40 ? "..." : "")}</div>
-                <div className=" flex items-baseline justify-between">
-                    <div className="text-xl">{article.price}dzd</div>
-                    <Link href={"/articles/" + article.id} className="font-extrabold italic ms-auto  hover:scale-110   "> Voire plus </Link>
+            {/* Content Area */}
+            <div className="flex flex-col flex-grow">
+                {/* Title */}
+                <h3 className="font-semibold h-12 mb-2 text-gray-800 text-right overflow-hidden">
+                    {/* The title is no longer uppercased */}
+                    {article.title}
+                </h3>
+
+                {/* Price Section */}
+                <div className="flex items-baseline justify-end gap-3 mb-2">
+                    <div className="flex items-baseline gap-1">
+                        <span className="text-orange-500 font-bold text-2xl">
+                            {article.price}
+                        </span>
+                        <span className="text-orange-500 font-semibold">دج</span>
+                    </div>
+                    <div className="flex items-baseline gap-1">
+                        <span className="text-gray-400 line-through">
+                            {article.originalPrice}
+                        </span>
+                        <span className="text-gray-400 text-sm">دج</span>
+                    </div>
                 </div>
 
-                <div className="max-w-full   max-sm:text-xs text-sm max-sm:h-20 h-24 shadow-inner px-2  my-4 py-4 bg-slate-100 bg-opacity-55 rounded-xl shadow-gray-300  ">
-                    {article.disc.slice(0, 100) + "..."}
-
+                {/* Rating and Sales Count */}
+                {/* mt-auto pushes this section to the bottom of the card */}
+                <div className="flex items-center justify-end gap-2 mt-auto text-gray-500 text-sm">
+                    <span>{`+${article.salesCount} مباع`}</span>
+                    <span>|</span>
+                    <span>{article.rating}</span>
+                    <span className="text-yellow-400 text-base">★</span>
                 </div>
-
-                <div className="p-1"></div>
-
             </div>
         </div>
     );

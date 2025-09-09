@@ -5,55 +5,80 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-
 function FeaturedCarousel() {
-const nav = useRouter();
+    const nav = useRouter();
     const [articles, setArticles] = useState<article[]>([]);
-
     const [index, setIndex] = useState(0);
     const [fade, setFade] = useState(true);
 
-
-
-    useEffect(()=>{ getArticles().then(res => { setArticles(res)}
-        );} ,[])
+    useEffect(() => {
+        getArticles().then(res => setArticles(res));
+    }, []);
 
     useEffect(() => {
         const interval = setInterval(() => {
             setFade(false);
             setTimeout(() => {
-                setIndex((prevIndex) => {
-                    if (prevIndex == articles.length - 1) return 0;
-                    else return prevIndex + 1;
-                }
+                setIndex((prevIndex) =>
+                    prevIndex === articles.length - 1 ? 0 : prevIndex + 1
                 );
                 setFade(true);
-            }, 700); // match fade-out duration
+            }, 700); // fade-out duration
         }, 10000); // 10 seconds
 
-        return () => clearInterval(interval); // Cleanup
-    }, [articles , index])
+        return () => clearInterval(interval);
+    }, [articles, index]);
 
     return (
-        <div className="flex flex-col h-[600px] w-96 rounded-2xl overflow-hidden" >
-            <div className={`bg-slate-300 flex-grow  transition-all duration-700 relative ${fade ? "opacity-100" : "opacity-0"
-                }`}>
-                {articles.length > 0 && <Image src={articles[index].thumbnail} alt="" fill />
-                }
-            </div>
-            <div className="h-40 bg-gray-700 flex flex-col justify-center p-6 gap-2">
+        <div className="flex flex-col w-full md:w-[85%] lg:w-[100%] lg:h-[600px] h-[450px] sm:h-[500px] sm:w-[60%] md:h-[500px] rounded-2xl overflow-hidden">
 
-                <div className="text-white flex justify-between items-center">
-                    <div className="text-xl font-extrabold">{articles.length > 0 ? articles[index].title.slice(0, 40) : "LOADING ....  "}</div>
-                    <div className="min-w-fit">
+            {/* Image */}
+            <div
+                className={`bg-slate-300 flex-grow transition-opacity duration-700 relative ${
+                    fade ? "opacity-100" : "opacity-0"
+                }`}
+            >
+                {articles.length > 0 && (
+                    <Image
+                        src={articles[index].thumbnail}
+                        alt={articles[index].title}
+                        fill
+                        className="object-cover"
+                    />
+                )}
+            </div>
+
+            {/* Content */}
+            <div className="h-36 sm:h-40 bg-gray-700 flex flex-col justify-center p-4 sm:p-6 gap-3">
+                <div className="text-white flex flex-col sm:flex-row justify-between gap-3 sm:gap-0 items-start sm:items-center">
+                    <div className="text-base sm:text-lg md:text-xl font-extrabold">
+                        {articles.length > 0
+                            ? articles[index].title.slice(0, 40)
+                            : "LOADING ...."}
+                    </div>
+                    <div className="min-w-fit text-sm sm:text-base">
                         <div className="font-bold">Price:</div>
-                        <div>{articles.length > 0 ? articles[index].price : "0000.00"} dzd</div>
+                        <div>
+                            {articles.length > 0 ? articles[index].price : "0000.00"} dzd
+                        </div>
                     </div>
                 </div>
-                <div className="text-white font-extrabolder flex gap-3 justify-around">
-                    <button className="bg-gray-800  rounded-lg w-44 py-3 text-center" onClick={()=>{setIndex( (index<articles.length-1) ?index+1 :0)}}>next </button>
-                    <button className="bg-gray-800  rounded-lg w-44 py-3 text-center" onClick={()=>{nav.replace("/articles/" + articles[index].id)}}>View item</button>
 
+                <div className="text-white font-extrabolder flex flex-col sm:flex-row gap-3 justify-around">
+                    <button
+                        className="bg-gray-800 rounded-lg w-full sm:w-44 py-2 sm:py-3 text-center"
+                        onClick={() =>
+                            setIndex(index < articles.length - 1 ? index + 1 : 0)
+                        }
+                    >
+                        Next
+                    </button>
+                    <button
+                        className="bg-gray-800 rounded-lg w-full sm:w-44 py-2 sm:py-3 text-center"
+                        onClick={() => nav.replace("/articles/" + articles[index].id)}
+                    >
+                        View item
+                    </button>
                 </div>
             </div>
         </div>
