@@ -1,25 +1,12 @@
-import { article } from "@/interfaces/article";
+import { Article } from "@/interfaces/article";
 import Image from "next/image";
+import Link from "next/link";
 
-// Assumption: Your 'article' interface will now include originalPrice, rating, and salesCount.
-// For example:
-// interface article {
-//     id: number;
-//     title: string;
-//     thumbnail: string;
-//     price: number; // This will be the sale price
-//     originalPrice: number; // The price to be struck through
-//     rating: number;
-//     salesCount: number;
-//     // disc is no longer used in this component
-// }
-
-function FeaturedCard({ article }: { article: article }) {
+function FeaturedCard({ article }: { article: Article }) {
     return (
-        // Set the direction to right-to-left for proper Arabic text alignment
-        <div
-            dir="rtl"
-            className="group w-full max-w-xs bg-white p-3 rounded-lg shadow-md flex-shrink-0 flex flex-col"
+        <Link
+            href={`/articles/${article.id}`}
+            className="group w-full max-w-xs bg-white p-3 rounded-lg shadow-sm flex-shrink-0 flex flex-col hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer border border-gray-100"
         >
             {/* Thumbnail */}
             <div className="bg-zinc-200 h-44 mb-3 rounded-md relative overflow-hidden">
@@ -27,6 +14,7 @@ function FeaturedCard({ article }: { article: article }) {
                     className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
                     src={article.thumbnail}
                     fill
+                    sizes="(max-width: 640px) 100vw, 280px"
                     alt={article.title}
                 />
             </div>
@@ -34,37 +22,50 @@ function FeaturedCard({ article }: { article: article }) {
             {/* Content Area */}
             <div className="flex flex-col flex-grow">
                 {/* Title */}
-                <h3 className="font-semibold h-12 mb-2 text-gray-800 text-right overflow-hidden">
-                    {/* The title is no longer uppercased */}
+                <h3 className="font-semibold h-12 mb-2 text-gray-800 text-left overflow-hidden line-clamp-2">
                     {article.title}
                 </h3>
+                
+                {/* Description (if present) */}
+                {article.description && (
+                    <p className="text-gray-500 text-sm text-left mb-2 line-clamp-2">
+                        {article.description}
+                    </p>
+                )}
 
                 {/* Price Section */}
-                <div className="flex items-baseline justify-end gap-3 mb-2">
+                <div className="flex items-baseline justify-start gap-3 mb-2">
                     <div className="flex items-baseline gap-1">
-                        <span className="text-orange-500 font-bold text-2xl">
+                        <span className="text-blue-600 font-bold text-2xl">
                             {article.price}
                         </span>
-                        <span className="text-orange-500 font-semibold">دج</span>
+                        <span className="text-blue-600 font-semibold text-sm">DZD</span>
                     </div>
-                    <div className="flex items-baseline gap-1">
-                        <span className="text-gray-400 line-through">
-                            {article.originalPrice}
-                        </span>
-                        <span className="text-gray-400 text-sm">دج</span>
-                    </div>
+                    {article.oldPrice && (
+                        <div className="flex items-baseline gap-1">
+                            <span className="text-gray-400 line-through">
+                                {article.oldPrice}
+                            </span>
+                            <span className="text-gray-400 text-sm">DZD</span>
+                        </div>
+                    )}
                 </div>
 
                 {/* Rating and Sales Count */}
-                {/* mt-auto pushes this section to the bottom of the card */}
-                <div className="flex items-center justify-end gap-2 mt-auto text-gray-500 text-sm">
-                    <span>{`+${article.salesCount} مباع`}</span>
-                    <span>|</span>
-                    <span>{article.rating}</span>
-                    <span className="text-yellow-400 text-base">★</span>
-                </div>
+                {(article.sales || article.rating) && (
+                    <div className="flex items-center justify-start gap-2 mt-auto text-gray-500 text-sm">
+                        {article.sales && <span>{`+${article.sales} vendus`}</span>}
+                        {article.sales && article.rating && <span>|</span>}
+                        {article.rating && (
+                            <span className="flex items-center gap-1">
+                                <span>{article.rating}</span>
+                                <span className="text-yellow-400 text-base">★</span>
+                            </span>
+                        )}
+                    </div>
+                )}
             </div>
-        </div>
+        </Link>
     );
 }
 

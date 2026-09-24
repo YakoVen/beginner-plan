@@ -19,7 +19,14 @@ Que vous soyez à la recherche de [bénéfice ou besoin – ex. style, confort, 
 Commencez vos achats dès maintenant et faites confiance à [Nom de votre boutique] pour vous simplifier la vie !`
 
 
-export const categories = [{name:"Vetement",thumbnail:"" ,icon:""},{name:"Accessoire",thumbnail:"" ,icon:""} , {name:"Electronique",thumbnail:"" ,icon:""},{name:"Autre",thumbnail:"" ,icon:""}]
+export const categories = [
+  { name: "Mode & Accessoires", thumbnail: "", icon: "" },
+  { name: "High-Tech & Audio", thumbnail: "", icon: "" },
+  { name: "Maison & Décoration", thumbnail: "", icon: "" },
+  { name: "Sport & Bien-être", thumbnail: "", icon: "" },
+  { name: "Beauté & Cosmétiques", thumbnail: "", icon: "" },
+  { name: "Bagagerie & Voyage", thumbnail: "", icon: "" }
+];
 
 
 export const welcom_page_info  ={

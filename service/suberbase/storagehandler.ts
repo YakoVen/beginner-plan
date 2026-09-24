@@ -1,4 +1,0 @@
-import { supabase } from "./superbase";
-
-
-

@@ -5,7 +5,7 @@ import { categories } from "@/service/constants";
 
 interface Filtering {
   value: { price: number[]; categories: number[] };
-  onChange: (filter: any) => void;
+  onChange: (filter: number[] | ((prev: number[]) => number[])) => void;
   search: string;
   clearSearch: () => void;
 }
@@ -17,7 +17,7 @@ function FilterButtonContainer({
   clearSearch,
 }: Filtering) {
   return (
-    <div className="py-4 px-3 md:px-6">
+    <div>
       {/* Categories buttons */}
       <div className="flex flex-wrap gap-2 md:gap-3 justify-center max-w-full overflow-x-auto">
         {categories.map((e, i) => (
@@ -29,7 +29,7 @@ function FilterButtonContainer({
                 if (value.categories.includes(i)) {
                   onChange(value.categories.filter((sel) => sel !== i));
                 } else {
-                  onChange((prev: any) => [...prev, i]);
+                  onChange((prev: number[]) => [...prev, i]);
                 }
               }}
             />

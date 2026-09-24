@@ -1,24 +1,29 @@
-
-import { getArticles } from "@/service/suberbase/databasehandle";
+import { getArticles } from "@/service/firebase/database";
 import ArticlesListing from "@/components/articles-page/articles-listing";
 import { Suspense } from "react";
+import { ProductCardSkeleton } from "@/components/general/skeleton";
 
-
-export async function getServerSideProps() {
-  return { props: {} };
-}
-async function AriclesPage() {
-
-  const articles = await getArticles()
-
+async function ArticlesPage() {
+  const articles = await getArticles();
 
   return (
-    <div className=" max-w-[100vw] ">
-      <Suspense fallback={<div>Loading...</div>}>
-        <ArticlesListing articles={articles} />
-      </Suspense>
-    </div>
+    <Suspense
+      fallback={
+        <div className="flex flex-col md:flex-row h-screen overflow-hidden pt-20">
+          <div className="md:w-64 md:border-r md:flex-shrink-0"></div>
+          <div className="flex-grow p-3 sm:p-4 md:p-6">
+            <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <ProductCardSkeleton key={i} />
+              ))}
+            </div>
+          </div>
+        </div>
+      }
+    >
+      <ArticlesListing articles={articles} />
+    </Suspense>
   );
 }
 
-export default AriclesPage;
+export default ArticlesPage;

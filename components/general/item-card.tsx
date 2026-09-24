@@ -1,30 +1,25 @@
 "use client";
-import { article } from "@/interfaces/article";
-import { getArticles } from "@/service/suberbase/databasehandle";
+import { Article } from "@/interfaces/article";
+import { getArticles } from "@/service/firebase/database";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 function ItemCard() {
-    const [articles, setArticles] = useState<article[]>([]);
-    const nav = useRouter();
+    const [articles, setArticles] = useState<Article[]>([]);
 
     // Fetch articles once
     useEffect(() => {
         getArticles().then((res) => setArticles(res));
     }, []);
 
-    const handleView = (id: string) => {
-        nav.push(`/articles/${id}`);
-    };
-
     return (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 p-4">
-            {articles.map((item, i) => (
-                <div
-                    key={i}
+            {articles.map((item) => (
+                <Link
+                    key={item.id}
+                    href={`/articles/${item.id}`}
                     className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col hover:shadow-lg transition cursor-pointer"
-                    onClick={() => handleView(item.id)}
                 >
                     {/* Image */}
                     <div className="relative h-40 sm:h-48">
@@ -32,6 +27,7 @@ function ItemCard() {
                             src={item.thumbnail}
                             alt={item.title}
                             fill
+                            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
                             className="object-cover"
                         />
                     </div>
@@ -45,23 +41,31 @@ function ItemCard() {
 
                         {/* Prices */}
                         <div className="flex items-baseline gap-2">
-                            <span className="text-gray-400 line-through text-xs">
-                                {item.oldPrice ? `${item.oldPrice} دج` : ""}
-                            </span>
+                            {item.oldPrice && (
+                                <span className="text-gray-400 line-through text-xs">
+                                    {item.oldPrice} دج
+                                </span>
+                            )}
                             <span className="text-red-600 font-bold text-lg">
                                 {item.price} دج
                             </span>
                         </div>
 
                         {/* Rating & Sales */}
-                        <div className="text-xs text-gray-500 flex items-center gap-1">
-                            <span className="text-yellow-500">★</span>
-                            <span>{item.rating ?? "4.8"}</span>
-                            <span>|</span>
-                            <span>{item.sales ?? "3000+"} مبيع</span>
-                        </div>
+                        {(item.rating || item.sales) && (
+                            <div className="text-xs text-gray-500 flex items-center gap-1">
+                                {item.rating && (
+                                    <>
+                                        <span className="text-yellow-500">★</span>
+                                        <span>{item.rating}</span>
+                                    </>
+                                )}
+                                {item.rating && item.sales && <span>|</span>}
+                                {item.sales && <span>{item.sales} مبيع</span>}
+                            </div>
+                        )}
                     </div>
-                </div>
+                </Link>
             ))}
         </div>
     );

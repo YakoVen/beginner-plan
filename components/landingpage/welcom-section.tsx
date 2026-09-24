@@ -1,48 +1,50 @@
-import Image from "next/image";
-import bg from "@/assets/bgs/pot-544071_1920.jpg";
-import icon from "@/assets/icon/icon.png";
-import Link from "next/link";
 import ItemCard from "../general/featured-carousel";
 import PublicStoreStates from "./widgets/store-pub-states";
-import { store_name, welcom_page_info } from "@/service/constants";
+import { store_name, welcom_page_info, contact_info } from "@/service/constants";
+import Link from "next/link";
 
 function WelcomSection() {
     return (
-        // The main container with responsive padding
-        <div className="relative group h-screen w-screen px-4 sm:px-6 lg:px-10 mx-auto flex justify-center items-center">
-            {/* The main content area with responsive flex direction */}
-            <div className="flex flex-col sm:flex-row sm:p-12 md:flex-row w-full max-w-7xl items-center md:p-12">
-
-                {/* Text content container */}
-                <div className="flex-grow flex flex-col justify-center text-center md:text-left">
-                    {/* Responsive text size for the store name */}
-                    <div className="text-4xl sm:text-5xl lg:text-6xl font-bold"> {store_name}</div>
-
-                    {/* Responsive text size for the slogan */}
-                    <div className="text-2xl sm:text-3xl lg:text-4xl mt-2"> {welcom_page_info.short_slogan}</div>
+        <div className="relative group min-h-screen w-full px-4 sm:px-6 lg:px-10 mx-auto flex justify-center items-center bg-gradient-to-br from-slate-50 to-blue-50">
+            <div className="flex flex-col md:flex-row w-full max-w-7xl items-center md:p-12 gap-8 md:gap-12 py-20 md:py-0">
+                <div className="flex-grow flex flex-col justify-center text-center md:text-left w-full">
+                    <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900"> {store_name}</div>
+                    <div className="text-2xl sm:text-3xl lg:text-4xl mt-4 text-gray-700"> {welcom_page_info.short_slogan}</div>
                     <div className="mt-8 flex justify-center md:justify-start">
-    <PublicStoreStates />
-</div>
-
+                        <Link href="/articles" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 text-lg">
+                            Découvrir nos produits
+                        </Link>
+                    </div>
+                    <div className="mt-8 flex justify-center md:justify-start">
+                        <PublicStoreStates />
+                    </div>
                 </div>
 
-                {/* ItemCard container - hidden on extra-small screens, full-width on small, and flex-basis on medium+ */}
-                <div className="w-full sm:w-auto mt-8 md:mt-0 sm:ml-20 flex justify-center">
-                    <div className="hidden sm:block">
+                <div className="w-full md:w-1/2 flex justify-center">
+                    <div className="w-full max-w-lg">
                         <ItemCard />
                     </div>
                 </div>
             </div>
 
-            {/* Social media links with responsive layout and text size */}
-            <div className="absolute bottom-0 right-0 text-white p-3 flex flex-col sm:flex-row justify-center items-center gap-3 opacity-50 hover:opacity-100 transition-all duration-700">
-                <div className="group text-sm sm:text-base hover:text-lg">
-                    <span className="transition-all duration-700 hover:text-green-400 fa-brands fa-whatsapp px-1 hover:scale-110"></span>
-                    Whatsapp : <span>0765778903</span>
-                </div>
+            <div className="absolute bottom-0 right-0 text-white p-3 flex flex-col sm:flex-row justify-center items-center gap-3 opacity-50 hover:opacity-100 transition-all duration-700 bg-black/40 rounded-tl-xl">
+                {contact_info.phone1 && (
+                    <div className="group text-sm sm:text-base hover:text-lg">
+                        <span className="transition-all duration-700 hover:text-green-400 fa-brands fa-whatsapp px-1 hover:scale-110"></span>
+                        Whatsapp : <span>{contact_info.phone1}</span>
+                    </div>
+                )}
                 <div className="flex gap-3 text-lg sm:text-xl">
-                    <div><span className="fa-brands fa-instagram transition-all duration-700 hover:text-orange-600"></span></div>
-                    <div><span className="fa-brands fa-facebook transition-all duration-700 hover:text-blue-600"></span></div>
+                    {contact_info.socials.find(s => s.platform.toLowerCase() === 'instagram') && (
+                        <a href={contact_info.socials.find(s => s.platform.toLowerCase() === 'instagram')?.link} target="_blank" rel="noopener noreferrer">
+                            <span className="fa-brands fa-instagram transition-all duration-700 hover:text-blue-400"></span>
+                        </a>
+                    )}
+                    {contact_info.socials.find(s => s.platform.toLowerCase() === 'facebook') && (
+                        <a href={contact_info.socials.find(s => s.platform.toLowerCase() === 'facebook')?.link} target="_blank" rel="noopener noreferrer">
+                            <span className="fa-brands fa-facebook transition-all duration-700 hover:text-blue-600"></span>
+                        </a>
+                    )}
                 </div>
             </div>
         </div>

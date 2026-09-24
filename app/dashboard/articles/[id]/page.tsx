@@ -1,18 +1,16 @@
 import ArticleEditor from "@/components/dashboard/article-editor";
-import { getArticle } from "@/service/suberbase/databasehandle";
+import { getArticle } from "@/service/firebase/database";
+import { notFound } from "next/navigation";
 
-import { PageProps } from "@/.next/types/app/layout";
+type Props = { params: Promise<{ id: string }> };
 
-export async function getServerSideProps() {
-  return { props: {} };
-}
-async function EditorPage({ params }:PageProps) {
-
-
+async function EditorPage({ params }: Props) {
     const { id } = await params;
-
     const article = await getArticle(id);
-    console.log(article);
+
+    if (!article) {
+        notFound();
+    }
 
     return (
         <div className="min-h-screen">

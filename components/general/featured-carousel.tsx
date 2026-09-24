@@ -1,13 +1,12 @@
 "use client"
-import { article } from "@/interfaces/article";
-import { getArticles } from "@/service/suberbase/databasehandle";
+import { Article } from "@/interfaces/article";
+import { getArticles } from "@/service/firebase/database";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 function FeaturedCarousel() {
-    const nav = useRouter();
-    const [articles, setArticles] = useState<article[]>([]);
+    const [articles, setArticles] = useState<Article[]>([]);
     const [index, setIndex] = useState(0);
     const [fade, setFade] = useState(true);
 
@@ -16,6 +15,8 @@ function FeaturedCarousel() {
     }, []);
 
     useEffect(() => {
+        if (articles.length === 0) return;
+        
         const interval = setInterval(() => {
             setFade(false);
             setTimeout(() => {
@@ -27,58 +28,72 @@ function FeaturedCarousel() {
         }, 10000); // 10 seconds
 
         return () => clearInterval(interval);
-    }, [articles, index]);
+    }, [articles.length]);
+
+    if (articles.length === 0 || !articles[index]) {
+        return (
+            <div className="flex flex-col w-full md:w-[85%] lg:w-[100%] lg:h-[600px] h-[450px] sm:h-[500px] sm:w-[60%] md:h-[500px] rounded-2xl overflow-hidden bg-gray-100 relative">
+                {/* Shimmer effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 animate-pulse" />
+                {/* Skeleton content overlay */}
+                <div className="absolute bottom-0 left-0 right-0 h-36 sm:h-40 bg-gradient-to-t from-gray-300/80 to-transparent p-4 sm:p-6 flex flex-col justify-end gap-3">
+                    <div className="h-6 w-2/3 bg-gray-400/40 rounded-lg animate-pulse" />
+                    <div className="flex gap-3">
+                        <div className="h-10 w-32 bg-gray-400/30 rounded-xl animate-pulse" />
+                        <div className="h-10 w-32 bg-blue-400/30 rounded-xl animate-pulse" />
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div className="flex flex-col w-full md:w-[85%] lg:w-[100%] lg:h-[600px] h-[450px] sm:h-[500px] sm:w-[60%] md:h-[500px] rounded-2xl overflow-hidden">
-
+        <div className="relative flex flex-col w-full md:w-[85%] lg:w-[100%] lg:h-[600px] h-[450px] sm:h-[500px] sm:w-[60%] md:h-[500px] rounded-2xl overflow-hidden">
             {/* Image */}
             <div
-                className={`bg-slate-300 flex-grow transition-opacity duration-700 relative ${
+                className={`bg-slate-300 flex-grow h-full w-full absolute inset-0 transition-opacity duration-700 ${
                     fade ? "opacity-100" : "opacity-0"
                 }`}
             >
-                {articles.length > 0 && (
-                    <Image
-                        src={articles[index].thumbnail}
-                        alt={articles[index].title}
-                        fill
-                        className="object-cover"
-                    />
-                )}
+                <Image
+                    src={articles[index].thumbnail}
+                    alt={articles[index].title}
+                    fill
+                    priority
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 60vw, 500px"
+                    className="object-cover"
+                />
             </div>
 
             {/* Content */}
-            <div className="h-36 sm:h-40 bg-gray-700 flex flex-col justify-center p-4 sm:p-6 gap-3">
+            <div className="absolute bottom-0 left-0 right-0 h-36 sm:h-40 bg-gradient-to-t from-black/90 to-black/60 flex flex-col justify-center p-4 sm:p-6 gap-3 z-10">
                 <div className="text-white flex flex-col sm:flex-row justify-between gap-3 sm:gap-0 items-start sm:items-center">
-                    <div className="text-base sm:text-lg md:text-xl font-extrabold">
-                        {articles.length > 0
-                            ? articles[index].title.slice(0, 40)
-                            : "LOADING ...."}
+                    <div className="text-base sm:text-lg md:text-xl font-extrabold drop-shadow-md">
+                        {articles[index].title.slice(0, 40)}
                     </div>
-                    <div className="min-w-fit text-sm sm:text-base">
-                        <div className="font-bold">Price:</div>
+                    <div className="min-w-fit text-sm sm:text-base drop-shadow-md">
+                        <div className="font-bold">Prix :</div>
                         <div>
-                            {articles.length > 0 ? articles[index].price : "0000.00"} dzd
+                            {articles[index].price} dzd
                         </div>
                     </div>
                 </div>
 
-                <div className="text-white font-extrabolder flex flex-col sm:flex-row gap-3 justify-around">
+                <div className="text-white font-extrabold flex flex-col sm:flex-row gap-3 justify-around">
                     <button
-                        className="bg-gray-800 rounded-lg w-full sm:w-44 py-2 sm:py-3 text-center"
+                        className="bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl w-full sm:w-44 py-2 sm:py-3 text-center transition-all duration-300"
                         onClick={() =>
                             setIndex(index < articles.length - 1 ? index + 1 : 0)
                         }
                     >
-                        Next
+                        Suivant
                     </button>
-                    <button
-                        className="bg-gray-800 rounded-lg w-full sm:w-44 py-2 sm:py-3 text-center"
-                        onClick={() => nav.replace("/articles/" + articles[index].id)}
+                    <Link
+                        href={"/articles/" + articles[index].id}
+                        className="bg-blue-600 hover:bg-blue-700 rounded-xl w-full sm:w-44 py-2 sm:py-3 text-center block transition-all duration-300"
                     >
-                        View item
-                    </button>
+                        Voir l'article
+                    </Link>
                 </div>
             </div>
         </div>

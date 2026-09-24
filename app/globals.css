@@ -1,27 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Hide Vercel toolbar */
-#__vercel {
-  display: none !important;
-  visibility: hidden !important;
-}
-
-
-*{
-  font-family: "Lato", serif;
-
-  transition-property: all;
-  transition-duration: 600ms;
-}
-.pacifico-font{
-  font-family: "Pacifico", serif;
-
-}
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Lato", Arial, Helvetica, sans-serif;
+  color: var(--foreground, #171717);
+  background: var(--background, #ffffff);
+}
+
+/* Targeted transitions for interactive elements only */
+a,
+button,
+input,
+select,
+textarea,
+[role="button"] {
+  transition: color 200ms ease, background-color 200ms ease,
+    border-color 200ms ease, opacity 200ms ease, transform 200ms ease;
 }

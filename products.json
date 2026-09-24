@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "name": "Wireless Noise-Canceling Earbuds",
+    "description": "Experience pure sound with these sleek, noise-canceling wireless earbuds. Includes a compact charging case for on-the-go power.",
+    "price": 89.99,
+    "category": "Tech & Gadgets",
+    "image": "images/earbuds.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Minimalist Ceramic Coffee Mug",
+    "description": "Start your morning right with this earthy, matte ceramic coffee mug. Designed for comfort and aesthetic appeal.",
+    "price": 18.50,
+    "category": "Home & Living",
+    "image": "images/ceramic_mug.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Premium Eco-Friendly Yoga Mat",
+    "description": "Enhance your practice with this non-slip, textured yoga mat. Made from eco-friendly materials to support your wellness journey.",
+    "price": 45.00,
+    "category": "Health & Fitness",
+    "image": "images/yoga_mat.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Classic Canvas Sneakers",
+    "description": "A timeless wardrobe staple. These comfortable white canvas sneakers pair perfectly with any casual outfit.",
+    "price": 55.00,
+    "category": "Fashion & Apparel",
+    "image": "images/canvas_sneakers.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Hydrating Vitamin C Serum",
+    "description": "Revitalize your skin with our brightening Vitamin C serum. Formulated to reduce dark spots and provide a radiant glow.",
+    "price": 29.99,
+    "category": "Beauty & Skincare",
+    "image": "images/vitamin_c_serum.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Smart Fitness Tracker Watch",
+    "description": "Keep track of your health metrics, steps, and heart rate. Features a sleek design and a long-lasting battery life.",
+    "price": 129.99,
+    "category": "Tech & Gadgets",
+    "image": "images/smart_watch.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Ergonomic Office Chair",
+    "description": "Upgrade your workspace with this fully adjustable ergonomic chair, designed to provide lumbar support during long hours.",
+    "price": 199.50,
+    "category": "Home & Living",
+    "image": "images/office_chair.jpg"
+  },
+  {
+    "id": 8,
+    "name": "Insulated Stainless Steel Water Bottle",
+    "description": "Keep your drinks cold for 24 hours or hot for 12 hours. Durable, BPA-free, and perfect for your active lifestyle.",
+    "price": 24.00,
+    "category": "Health & Fitness",
+    "image": "images/water_bottle.jpg"
+  },
+  {
+    "id": 9,
+    "name": "Vintage Leather Backpack",
+    "description": "Combine style and functionality. This spacious leather backpack features multiple compartments for your laptop and essentials.",
+    "price": 110.00,
+    "category": "Fashion & Apparel",
+    "image": "images/leather_backpack.jpg"
+  },
+  {
+    "id": 10,
+    "name": "Organic Soy Wax Candle",
+    "description": "Set a relaxing mood with this hand-poured soy wax candle. Features a calming lavender and vanilla scent.",
+    "price": 22.00,
+    "category": "Home & Living",
+    "image": "images/soy_candle.jpg"
+  }
+]

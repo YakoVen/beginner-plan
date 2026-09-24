@@ -1,21 +1,27 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/general/header";
-import Footer from "@/components/general/footer";
+import LayoutWrapper from "@/components/general/layout-wrapper";
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import { PrimeReactProvider } from 'primereact/api';
-import { store_description, store_name } from "@/service/constants";
-
+import { store_description, store_name, store_url } from "@/service/constants";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: store_name,
   description: store_description,
   icons: {
-    icon: './favicon.ico',
-    shortcut: './favicon.ico',
-    apple: './favicon.ico',
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
   },
+  openGraph: {
+    title: store_name,
+    description: store_description,
+    siteName: store_name,
+    type: 'website',
+  },
+  metadataBase: new URL(`https://${store_url}`),
 };
 
 export default function RootLayout({
@@ -25,20 +31,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <head>
-
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossOrigin="anonymous" referrerPolicy="no-referrer" />
-      </head>
-      <body
-        className={` antialiased `}
-      >
+      <body className={` antialiased `}>
         <PrimeReactProvider>
-          <Header />
-          <div className="relative">
-          {children}
-          </div>
-          <Footer />
+          <LayoutWrapper>
+            {children}
+          </LayoutWrapper>
         </PrimeReactProvider>
+        <Script id="fa-loader" strategy="lazyOnload">{`
+          var link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css';
+          link.crossOrigin = 'anonymous';
+          document.head.appendChild(link);
+        `}</Script>
       </body>
     </html>
   );

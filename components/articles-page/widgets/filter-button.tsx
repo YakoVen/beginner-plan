@@ -9,12 +9,10 @@ interface FilterButtonProps {
 function FilterButton({ name, active, onClick }: FilterButtonProps) {
   return (
     <button
+      type="button"
       onClick={onClick}
-      className={`border border-black font-medium transition-all duration-200
-        max-md:text-sm md:text-lg
-        max-md:rounded-lg md:rounded-xl
-        max-md:px-6 max-md:py-1 md:px-12 md:py-2
-        ${active ? "text-white bg-gray-900" : "bg-white shadow-md hover:bg-gray-100"}
+      className={`border font-medium transition-all duration-200 text-sm rounded-full px-5 py-2
+        ${active ? "border-blue-600 bg-blue-600 text-white shadow-md" : "border-gray-300 bg-white shadow-sm hover:bg-gray-50"}
       `}
     >
       {name}

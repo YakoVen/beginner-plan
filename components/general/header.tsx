@@ -8,15 +8,22 @@ function Header() {
     const [open, setOpen] = useState(false);
     const [search, setSearch] = useState("");
     const links = [
-        { name: "Shop", link: "/articles" },
+        { name: "Boutique", link: "/articles" },
         { name: "Contact", link: "/#contact" },
-        { name: "About", link: "/#about" }
+        { name: "À propos", link: "/#about" }
     ];
 
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (search.trim()) {
+            window.location.href = "/articles?search=" + encodeURIComponent(search);
+        }
+    };
+
     return (
-        <div>
+        <header>
             {/* Top Navbar */}
-            <div className="flex items-center px-4 sm:px-6 md:px-12 h-20 shadow w-screen fixed top-0 z-50 bg-white">
+            <nav className="flex items-center px-4 sm:px-6 md:px-12 h-20 shadow w-full fixed top-0 z-50 bg-white">
                 {/* Logo + Store name */}
                 <Link href={"/"}>
                     <div className="flex items-center">
@@ -45,23 +52,18 @@ function Header() {
                     ))}
                 </div>
 
-                {/* Desktop Search + Cart */}
-                <div className="hidden md:flex gap-3 items-center">
+                {/* Desktop Search */}
+                <form onSubmit={handleSearch} className="hidden md:flex gap-3 items-center">
                     <input
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="border py-1 px-4 rounded-lg w-40 focus:outline-none focus:ring-2 focus:ring-gray-400"
-                        placeholder="Search"
+                        placeholder="Rechercher..."
                     />
-                    <Link href={"/articles?search=" + search}>
-                        <img
-                            width="30"
-                            height="30"
-                            src="https://img.icons8.com/sf-regular-filled/48/1A1A1A/shopping-cart-loaded.png"
-                            alt="shopping-cart"
-                        />
-                    </Link>
-                </div>
+                    <button type="submit" className="text-gray-700 hover:text-gray-900 transition flex items-center justify-center p-1">
+                        <i className="fa-solid fa-magnifying-glass text-xl"></i>
+                    </button>
+                </form>
 
                 {/* Mobile Menu Button */}
                 <div className="flex-grow md:hidden"></div>
@@ -73,14 +75,22 @@ function Header() {
                         <i className="fa-solid fa-bars"></i>
                     </button>
                 </div>
-            </div>
+            </nav>
 
             {/* Mobile Menu */}
             <div
-                className={`md:hidden z-40 flex flex-col px-6 w-full bg-white fixed left-0 top-0 transition-all duration-500 overflow-hidden ${
-                    open ? "h-screen pt-20" : "h-0 pt-0"
+                className={`md:hidden z-[60] flex flex-col px-6 w-full bg-white fixed left-0 top-0 transition-all duration-500 overflow-hidden ${
+                    open ? "h-screen pt-4" : "h-0 pt-0"
                 }`}
             >
+                <div className="flex justify-end mb-8">
+                    <button
+                        className="h-11 w-11 flex items-center justify-center rounded-xl text-3xl text-gray-700 active:bg-gray-100"
+                        onClick={() => setOpen(false)}
+                    >
+                        <i className="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
                 {links.map((l, i) => (
                     <Link
                         key={i}
@@ -93,27 +103,19 @@ function Header() {
                 ))}
 
                 {/* Mobile Search */}
-                <div className="flex gap-2 mt-4">
+                <form onSubmit={(e) => { handleSearch(e); setOpen(false); }} className="flex gap-2 mt-4">
                     <input
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="border flex-grow py-1 px-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
-                        placeholder="Search"
+                        placeholder="Rechercher..."
                     />
-                    <Link
-                        href={"/articles?search=" + search}
-                        onClick={() => setOpen(false)}
-                    >
-                        <img
-                            width="30"
-                            height="30"
-                            src="https://img.icons8.com/sf-regular-filled/48/1A1A1A/shopping-cart-loaded.png"
-                            alt="shopping-cart"
-                        />
-                    </Link>
-                </div>
+                    <button type="submit" className="text-gray-700 hover:text-gray-900 transition flex items-center justify-center p-2">
+                        <i className="fa-solid fa-magnifying-glass text-xl"></i>
+                    </button>
+                </form>
             </div>
-        </div>
+        </header>
     );
 }
 
