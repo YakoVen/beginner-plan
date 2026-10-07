@@ -1,9 +1,7 @@
 "use client"
 import { Article } from "@/interfaces/article";
 
-import FilterBar from "@/components/articles-page/filter-bar";
-import FilterButtonContainer from "@/components/articles-page/filter-button-container";
-import ArticleCard from "@/components/articles-page/widgets/article-card";
+import ItemCard from "@/components/landingpage/widgets/item-card";
 import { Breadcrumbs } from "@/components/general/breadcrumbs";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -17,7 +15,6 @@ function ArticlesListing({ articles }: { articles: Article[] }) {
   const [max, setMax] = useState<number>(0);
   const [sortOption, setSortOption] = useState<string>("default");
 
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const data = useSearchParams();
 
   useEffect(() => {
@@ -60,66 +57,84 @@ function ArticlesListing({ articles }: { articles: Article[] }) {
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-screen pt-20 overflow-hidden">
-      {/* Sidebar - Handles its own mobile responsiveness */}
-      <div className="md:w-64 md:border-r md:flex-shrink-0">
-        <FilterBar
-          max={max}
-          value={{ categories: selected, price: price }}
-          onSelected={setSelected}
-          onPrice={setPrice}
-        />
-      </div>
+    <div className="w-full flex flex-col pb-12">
+      <div className="px-4 sm:px-6 lg:px-12 pt-6">
+        <Breadcrumbs items={[{ label: "Boutique" }]} />
+        
+        {/* Banner Section if a category is selected */}
+        {selected.length === 1 && (
+          <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-[2rem] p-8 my-6 flex items-center justify-between">
+             <div>
+                <h1 className="text-3xl font-extrabold text-gray-900 mb-2">
+                   {categories[selected[0]].name}
+                </h1>
+                <p className="text-gray-600 max-w-md">Découvrez nos dernières nouveautés pour un quotidien connecté.</p>
+             </div>
+             {/* Optional category image here */}
+          </div>
+        )}
 
-      {/* Main content */}
-      <div className="flex-grow flex flex-col overflow-hidden">
-        <div className="px-3 sm:px-4 md:px-6 pt-4 shrink-0">
-          <Breadcrumbs items={[{ label: "Boutique" }]} />
-          <FilterButtonContainer
-            clearSearch={() => setSearch("")}
-            value={{ categories: selected, price: price }}
-            search={search}
-            onChange={setSelected}
-          />
-          <div className="flex justify-between items-center py-2 text-sm text-gray-600">
-            <div>
-              {filteredArticles.length} produit{filteredArticles.length !== 1 ? 's' : ''} trouvé{filteredArticles.length !== 1 ? 's' : ''}
-            </div>
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="flex bg-gray-100 rounded-lg p-1">
-                <button 
-                  onClick={() => setViewMode("grid")}
-                  className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-500 hover:text-black'}`}
-                  title="Vue Grille"
-                >
-                  <i className="fa-solid fa-border-all"></i>
-                </button>
-                <button 
-                  onClick={() => setViewMode("list")}
-                  className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-md transition-colors ${viewMode === 'list' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-500 hover:text-black'}`}
-                  title="Vue Liste"
-                >
-                  <i className="fa-solid fa-list"></i>
-                </button>
-              </div>
-              <select 
-                className="border rounded p-2 bg-white outline-none" 
-                value={sortOption} 
-                onChange={(e) => setSortOption(e.target.value)}
-              >
-                <option value="default">Par défaut</option>
-                <option value="price_asc">Prix croissant</option>
-                <option value="price_desc">Prix décroissant</option>
-                <option value="newest">Plus récents</option>
-              </select>
-            </div>
+        {selected.length !== 1 && (
+          <div className="my-6">
+             <h1 className="text-3xl font-extrabold text-gray-900 mb-2">Boutique</h1>
+          </div>
+        )}
+
+        {/* Categories Pills Filter */}
+        <div className="flex gap-3 overflow-x-auto pb-4 hide-scrollbar mb-4">
+           <button 
+             onClick={() => setSelected([])} 
+             className={`px-4 py-2 rounded-full whitespace-nowrap font-medium text-sm transition-colors ${selected.length === 0 ? 'bg-green-700 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+           >
+             Tous
+           </button>
+           {categories.map((c, i) => (
+             <button 
+               key={i}
+               onClick={() => setSelected([i])} 
+               className={`px-4 py-2 rounded-full whitespace-nowrap font-medium text-sm transition-colors ${selected.includes(i) ? 'bg-green-700 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+             >
+               {c.name}
+             </button>
+           ))}
+        </div>
+
+        {search.length > 0 && (
+          <div className="mt-3 px-2 md:px-6 text-sm text-gray-700 flex items-center gap-2 mb-4">
+            <span>
+              Résultats pour : <span className="font-medium">{search}</span>
+            </span>
+            <button
+              onClick={() => setSearch("")}
+              className="px-2 py-1 bg-gray-400 hover:bg-gray-600 rounded-full text-white text-xs transition"
+            >
+              ✕
+            </button>
+          </div>
+        )}
+        
+        <div className="flex justify-between items-center py-2 text-sm text-gray-600 mb-6">
+          <div className="font-semibold text-gray-900">
+            {filteredArticles.length} produits trouvés
+          </div>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <select 
+              className="border border-gray-200 rounded-lg py-2 px-4 bg-white outline-none focus:border-green-500 font-medium text-gray-700 text-sm" 
+              value={sortOption} 
+              onChange={(e) => setSortOption(e.target.value)}
+            >
+              <option value="default">Trier par: Par défaut</option>
+              <option value="price_asc">Prix croissant</option>
+              <option value="price_desc">Prix décroissant</option>
+              <option value="newest">Plus récents</option>
+            </select>
           </div>
         </div>
 
         {/* Article Grid */}
-        <div className="flex-grow overflow-y-auto p-3 sm:p-4 md:p-6 pb-24 md:pb-6">
+        <div>
           {filteredArticles.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-gray-500">
+            <div className="flex flex-col items-center justify-center py-20 text-gray-500">
               <i className="fa-solid fa-box-open text-4xl mb-4"></i>
               <p className="text-lg mb-4">Aucun produit ne correspond à vos filtres.</p>
               <button 
@@ -128,15 +143,15 @@ function ArticlesListing({ articles }: { articles: Article[] }) {
                   setSelected([]);
                   setPrice([0, max + max / 10]);
                 }}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                className="px-6 py-2 bg-green-700 text-white font-semibold rounded-full hover:bg-green-800 transition"
               >
-                Réinitialiser les filtres
+                Réinitialiser
               </button>
             </div>
           ) : (
-            <div className={viewMode === 'grid' ? "grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "flex flex-col gap-4 max-w-4xl"}>
+            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {filteredArticles.map((e) => (
-                <ArticleCard key={e.id} article={e} viewMode={viewMode} />
+                <ItemCard key={e.id} article={e} />
               ))}
             </div>
           )}

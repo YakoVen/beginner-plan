@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Guide Développeur - Plan Débutant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        code, pre { font-family: 'JetBrains Mono', monospace; }
+        .page { width: 210mm; height: 296mm; overflow: hidden; position: relative; background: white; page-break-after: always; margin: 0 auto; }
+        .content { padding: 40px; height: 100%; display: flex; flex-direction: column; }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- Cover -->
+<div class="page bg-gray-900 text-white">
+    <div class="content justify-center items-start border-l-8 border-blue-500 pl-12">
+        <div class="text-blue-400 font-bold tracking-widest uppercase mb-4 text-xl">Documentation Technique</div>
+        <h1 class="text-6xl font-bold mb-6 leading-tight">Guide Développeur<br/><span class="text-gray-400 text-5xl">Plan Débutant</span></h1>
+        <p class="text-2xl text-gray-400 max-w-2xl mt-4">Configuration, déploiement et personnalisation du store e-commerce Next.js.</p>
+    </div>
+</div>
+
+<!-- Architecture & Setup -->
+<div class="page">
+    <div class="content">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">1. Stack & Architecture</h2>
+        
+        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 mb-8">
+            <ul class="space-y-4 text-gray-700 text-lg">
+                <li><span class="font-bold text-gray-900 w-48 inline-block">Framework :</span> Next.js 15 (App Router)</li>
+                <li><span class="font-bold text-gray-900 w-48 inline-block">Styling :</span> Tailwind CSS & PrimeReact</li>
+                <li><span class="font-bold text-gray-900 w-48 inline-block">Base de données :</span> Firebase Firestore</li>
+                <li><span class="font-bold text-gray-900 w-48 inline-block">Stockage fichiers :</span> Firebase Storage</li>
+                <li><span class="font-bold text-gray-900 w-48 inline-block">Authentification :</span> Firebase Auth (Dashboard)</li>
+            </ul>
+        </div>
+
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">2. Installation Rapide</h2>
+        <p class="text-gray-600 mb-4 text-lg">Installez les dépendances et configurez les variables d'environnement.</p>
+        
+        <div class="bg-gray-900 text-gray-300 p-4 rounded-xl mb-6 shadow-lg">
+            <pre class="text-lg"><code>npm install
+npm run dev</code></pre>
+        </div>
+
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Variables d'environnement (.env.local)</h3>
+        <div class="bg-gray-900 text-gray-300 p-5 rounded-xl mb-6 overflow-hidden text-sm shadow-lg">
+            <pre><code>NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id</code></pre>
+        </div>
+        
+        <p class="text-gray-800 bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded text-base">
+            <strong>Important :</strong> Le fichier <code>serviceAccountKey.json</code> est requis à la racine pour l'initialisation de Firebase Admin (Scripts de seed et middleware).
+        </p>
+    </div>
+</div>
+
+<!-- Configuration -->
+<div class="page">
+    <div class="content">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">3. Personnalisation du Store</h2>
+        
+        <p class="text-gray-600 mb-6 text-lg">Toute la configuration textuelle, les liens sociaux et le prix de livraison sont centralisés dans le fichier <code class="bg-gray-200 px-2 py-1 rounded">service/constants.ts</code>.</p>
+        
+        <div class="bg-gray-900 text-gray-300 p-6 rounded-xl mb-6 text-sm shadow-lg">
+            <pre><code>// service/constants.ts
+
+export const store_name = "Mon Super Store";
+export const store_url = "mondomaine.com";
+
+export const delivery_price = 500; // Prix de livraison fixe (DZD)
+
+export const store_description = "Bienvenue chez...";
+
+// Catégories (Affichées dans le menu et la landing page)
+export const categories = [
+  { name: "Mode & Accessoires", thumbnail: "", icon: "" },
+  { name: "High-Tech", thumbnail: "", icon: "" }
+];
+
+export const contact_info = {
+    phone1: "0555000000",
+    email: "contact@store.com",
+    socials: [
+        { platform: "instagram", link: "https://ig.com/store" },
+        { platform: "facebook", link: "https://fb.com/store" }
+    ]
+}</code></pre>
+        </div>
+
+        <h3 class="text-2xl font-bold text-gray-800 mb-4 mt-8">Changer le Thème Global</h3>
+        <p class="text-gray-600 mb-4 text-lg">Modifiez <code class="bg-gray-200 px-2 py-1 rounded">app/globals.css</code> ou ajustez <code class="bg-gray-200 px-2 py-1 rounded">tailwind.config.ts</code> pour modifier la palette de couleurs principale (actuellement configurée avec les classes utilitaires natives Tailwind).</p>
+    </div>
+</div>
+
+<!-- Database Schema -->
+<div class="page">
+    <div class="content">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">4. Schéma de la Base de Données</h2>
+        <p class="text-gray-600 mb-8 text-lg">L'application utilise deux collections principales dans Firestore.</p>
+
+        <h3 class="text-xl font-bold text-blue-600 mb-3">Collection: articles</h3>
+        <div class="bg-gray-50 p-5 rounded-xl border border-gray-200 mb-8 text-sm shadow-sm">
+            <pre><code>{
+  "id": "art-179000000",
+  "title": "Nom du produit",
+  "description": "Description détaillée...",
+  "price": 2500,
+  "category": 0, // Index dans le tableau constants.ts
+  "thumbnail": "https://firebasestorage...",
+  "screenshots": ["https://..."],
+  "active": true
+}</code></pre>
+        </div>
+
+        <h3 class="text-xl font-bold text-blue-600 mb-3">Collection: orders</h3>
+        <div class="bg-gray-50 p-5 rounded-xl border border-gray-200 mb-6 text-sm shadow-sm">
+            <pre><code>{
+  "id": "ord-179111222",
+  "date": "2026-09-25T14:30:00Z",
+  "name": "Nom Client",
+  "phone": "0555123456",
+  "address": "Alger, Alger Centre",
+  "quantity": 2,
+  "state": 0, // 0: Attente, 1: Confirmée, 2: Envoyée, 3: Retour
+  "command": {
+    "article_id": "art-179000000",
+    "title": "Nom du produit",
+    "price": 2500,
+    "thumb": "https://..."
+  }
+}</code></pre>
+        </div>
+        
+    </div>
+</div>
+
+</body>
+</html>

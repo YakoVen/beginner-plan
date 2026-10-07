@@ -23,8 +23,8 @@ export default async function Home() {
         }}
       />
       <WelcomSection></WelcomSection>
-      <SuggestionPreview articles={articles} ></SuggestionPreview>
       <CategoriesPreview articles={articles}></CategoriesPreview>
+      <SuggestionPreview articles={articles} ></SuggestionPreview>
       <RatingPreview></RatingPreview>
     </div>
   );

@@ -1,72 +1,57 @@
 "use client"
-import Image from "next/image";
-import { Article } from "@/interfaces/article";
-import { categories } from "@/service/constants";
 import Link from "next/link";
+import { Article } from "@/interfaces/article";
 
-function CategorieCard(
-  { articles, CategorieTitle, CategorieThumbnail, Icon }:
-  { articles: Article[], Icon: string, CategorieTitle: string, CategorieThumbnail: string }
-) {
-  const products = articles.filter((e) => categories[e.category] && categories[e.category].name == CategorieTitle);
+function CategorieCard({
+    articles,
+    CategorieTitle,
+    CategorieThumbnail,
+    Icon
+}: {
+    articles: Article[],
+    Icon: string,
+    CategorieTitle: string,
+    CategorieThumbnail: string
+}) {
+    // Map colors based on category title
+    const getColorClass = (title: string) => {
+        const titleLower = title.toLowerCase();
+        if (titleLower.includes("mode") || titleLower.includes("accessoires")) return "bg-green-50 text-green-700 border-green-100 hover:bg-green-100";
+        if (titleLower.includes("high-tech") || titleLower.includes("audio")) return "bg-blue-50 text-blue-700 border-blue-100 hover:bg-blue-100";
+        if (titleLower.includes("maison") || titleLower.includes("décoration")) return "bg-orange-50 text-orange-700 border-orange-100 hover:bg-orange-100";
+        if (titleLower.includes("sport") || titleLower.includes("bien")) return "bg-purple-50 text-purple-700 border-purple-100 hover:bg-purple-100";
+        if (titleLower.includes("beauté") || titleLower.includes("cosmétiques")) return "bg-pink-50 text-pink-700 border-pink-100 hover:bg-pink-100";
+        if (titleLower.includes("bagagerie") || titleLower.includes("voyage")) return "bg-yellow-50 text-yellow-700 border-yellow-100 hover:bg-yellow-100";
+        return "bg-gray-50 text-gray-700 border-gray-100 hover:bg-gray-100";
+    };
 
-  return (
-    <div className="w-full max-w-sm bg-white border lg:w-[300px] border-gray-200 rounded-lg shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
-      
-      <div className="relative h-48 w-full">
-        <Image 
-          src={CategorieThumbnail} 
-          alt={CategorieTitle} 
-          fill 
-          className="object-cover rounded-t-lg" 
-        />
-        <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full font-bold text-gray-900 text-sm shadow-sm">
-          {CategorieTitle}
-        </div>
-      </div>
+    // Get an icon based on title
+    const getIconClass = (title: string) => {
+        const titleLower = title.toLowerCase();
+        if (titleLower.includes("mode") || titleLower.includes("accessoires")) return "fa-solid fa-shirt";
+        if (titleLower.includes("high-tech") || titleLower.includes("audio")) return "fa-solid fa-headphones";
+        if (titleLower.includes("maison") || titleLower.includes("décoration")) return "fa-solid fa-house-chimney";
+        if (titleLower.includes("sport") || titleLower.includes("bien")) return "fa-solid fa-dumbbell";
+        if (titleLower.includes("beauté") || titleLower.includes("cosmétiques")) return "fa-solid fa-spa";
+        if (titleLower.includes("bagagerie") || titleLower.includes("voyage")) return "fa-solid fa-suitcase-rolling";
+        return "fa-solid fa-tag";
+    };
 
-      <div className="p-4">
+    const colorClass = getColorClass(CategorieTitle);
+    const iconClass = getIconClass(CategorieTitle);
 
-        <div className="flex flex-wrap sm:flex-nowrap gap-3 items-center mb-4">
-          <div>
-            <div className="text-xs font-light text-gray-500">Produits</div>
-            <div className="text-base font-semibold">{products.length}+</div>
-          </div>
-          <div className="flex-grow" />
-          <Link
-            href={"/articles?categorie=" + encodeURIComponent(CategorieTitle)}
-            className="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-          >
-            Voir plus
-          </Link>
-        </div>
-
-        <div className="flex gap-2 pb-2 overflow-x-auto">
-          {products.filter((e) => e.active).map((e) =>
-            <Link
-              key={e.id}
-              href={"/articles/" + e.id}
-              className="rounded-lg overflow-hidden h-[70px] w-[70px] flex-shrink-0 cursor-pointer block"
-            >
-              <Image
-                src={e.thumbnail}
-                height={70}
-                width={70}
-                alt={e.title}
-                className="object-cover w-full h-full"
-              />
-            </Link>
-          )}
-
-          {products.filter((e) => e.active).length === 0 && (
-            <div className="rounded-lg h-[70px] w-full text-center flex justify-center items-center text-gray-400 text-sm italic gap-2 bg-gray-50">
-              <i className="fa-solid fa-box-open"></i> stock rompu
+    return (
+        <Link href={"/articles?categorie=" + encodeURIComponent(CategorieTitle)}>
+            <div className={`flex flex-col items-center justify-center p-6 w-[160px] h-[130px] rounded-3xl border transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer ${colorClass}`}>
+                <div className="text-3xl mb-3">
+                    <i className={iconClass}></i>
+                </div>
+                <div className="text-sm font-semibold text-center leading-tight">
+                    {CategorieTitle}
+                </div>
             </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+        </Link>
+    );
 }
 
 export default CategorieCard;

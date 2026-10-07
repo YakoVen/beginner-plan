@@ -146,7 +146,7 @@ export default function OverviewPage() {
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value: number) => [value, 'Commandes']} />
+                <Tooltip formatter={(value: any) => [value, 'Commandes']} />
                 <Legend verticalAlign="bottom" height={36} />
               </PieChart>
             </ResponsiveContainer>

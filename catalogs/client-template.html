@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Catalogue - Plan Débutant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .page { width: 210mm; height: 296mm; overflow: hidden; position: relative; background: white; page-break-after: always; margin: 0 auto; }
+        .content { padding: 40px; height: 100%; display: flex; flex-direction: column; }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- Page 1: Cover -->
+<div class="page bg-gradient-to-br from-blue-900 to-blue-600 text-white">
+    <div class="content justify-center items-center text-center">
+        <div class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mb-8">
+            <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        </div>
+        <h1 class="text-6xl font-bold mb-6 leading-tight">Le Plan Débutant<br/><span class="text-blue-300">E-Commerce</span></h1>
+        <p class="text-2xl font-light text-blue-100 max-w-2xl mb-12">Lancez votre boutique en ligne instantanément. Parfait pour les dropshippers, les vendeurs sur réseaux sociaux et les nouvelles marques.</p>
+    </div>
+</div>
+
+<!-- Page 2: Features -->
+<div class="page">
+    <div class="content">
+        <h2 class="text-4xl font-bold text-gray-800 mb-8 border-b-4 border-blue-600 pb-4 inline-block">Pourquoi choisir le Plan Débutant ?</h2>
+        
+        <div class="grid grid-cols-2 gap-8 flex-grow content-start pt-12">
+            <div class="bg-blue-50 p-8 rounded-2xl">
+                <h3 class="text-2xl font-bold text-blue-800 mb-4">🚀 Lancement Rapide</h3>
+                <p class="text-gray-600 text-lg">Pas de configuration complexe. Votre catalogue en ligne est prêt à accueillir vos clients en quelques heures, sans compétences techniques.</p>
+            </div>
+            <div class="bg-blue-50 p-8 rounded-2xl">
+                <h3 class="text-2xl font-bold text-blue-800 mb-4">💳 Commandes Sans Friction</h3>
+                <p class="text-gray-600 text-lg">Un processus de paiement ultra-simplifié via un formulaire de Paiement à la Livraison (COD) ou commande directe sur WhatsApp.</p>
+            </div>
+            <div class="bg-blue-50 p-8 rounded-2xl">
+                <h3 class="text-2xl font-bold text-blue-800 mb-4">📱 Optimisé Mobile</h3>
+                <p class="text-gray-600 text-lg">Vos clients achètent principalement sur téléphone. Notre interface est pensée en priorité pour les smartphones et l'expérience mobile.</p>
+            </div>
+            <div class="bg-blue-50 p-8 rounded-2xl">
+                <h3 class="text-2xl font-bold text-blue-800 mb-4">📊 Dashboard Intuitif</h3>
+                <p class="text-gray-600 text-lg">Gérez vos produits, suivez vos commandes et consultez vos revenus quotidiens depuis un panneau d'administration privé et sécurisé.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Page 3: Storefront Screenshot -->
+<div class="page bg-gray-50">
+    <div class="content">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">Une Vitrine Professionnelle</h2>
+        <p class="text-lg text-gray-600 mb-8">Accueillez vos clients avec un design moderne, des catégories claires et des produits mis en avant.</p>
+        <div class="rounded-xl overflow-hidden shadow-2xl border border-gray-200 flex-grow relative bg-white flex justify-center p-4">
+            <img src="{{IMG_HOME}}" class="w-full object-contain object-top" style="max-height: 850px;" alt="Storefront">
+        </div>
+    </div>
+</div>
+
+<!-- Page 4: Catalog -->
+<div class="page bg-gray-50">
+    <div class="content">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">Catalogue et Filtres Intelligents</h2>
+        <p class="text-lg text-gray-600 mb-8">Vos clients peuvent facilement trouver ce qu'ils cherchent grâce à la recherche et l'organisation en catégories.</p>
+        <div class="rounded-xl overflow-hidden shadow-2xl border border-gray-200 flex-grow relative bg-white flex justify-center p-4">
+            <img src="{{IMG_ARTICLES}}" class="w-full object-contain object-top" style="max-height: 850px;" alt="Catalog">
+        </div>
+    </div>
+</div>
+
+<!-- Page 5: Dashboard overview -->
+<div class="page bg-gray-50">
+    <div class="content">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">Vue d'ensemble de l'activité</h2>
+        <p class="text-lg text-gray-600 mb-8">Un tableau de bord complet pour analyser vos ventes, vos commandes en attente et vos revenus mensuels.</p>
+        <div class="rounded-xl overflow-hidden shadow-2xl border border-gray-200 flex-grow relative bg-white flex justify-center p-4">
+            <img src="{{IMG_DASHBOARD}}" class="w-full object-contain object-top" style="max-height: 850px;" alt="Dashboard">
+        </div>
+    </div>
+</div>
+
+<!-- Page 6: Orders Management -->
+<div class="page bg-gray-50">
+    <div class="content">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">Gestion des Commandes</h2>
+        <p class="text-lg text-gray-600 mb-8">Traitez les commandes rapidement, changez leur statut (En attente, Confirmée, Envoyée, Retour) et exportez-les en CSV.</p>
+        <div class="rounded-xl overflow-hidden shadow-2xl border border-gray-200 flex-grow relative bg-white flex justify-center p-4">
+            <img src="{{IMG_ORDERS}}" class="w-full object-contain object-top" style="max-height: 850px;" alt="Orders Management">
+        </div>
+    </div>
+</div>
+
+<!-- Page 7: Add Product -->
+<div class="page bg-gray-50">
+    <div class="content">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">Ajout Simple de Produits</h2>
+        <p class="text-lg text-gray-600 mb-8">Gérez votre catalogue en quelques clics : titre, prix, galerie d'images et catégorie.</p>
+        <div class="rounded-xl overflow-hidden shadow-2xl border border-gray-200 flex-grow relative bg-white flex justify-center p-4">
+            <img src="{{IMG_ADD}}" class="w-full object-contain object-top" style="max-height: 850px;" alt="Add Product">
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
