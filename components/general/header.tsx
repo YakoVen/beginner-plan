@@ -10,7 +10,8 @@ function Header() {
     const links = [
         { name: "Accueil", link: "/" },
         { name: "Boutique", link: "/articles" },
-        { name: "À propos", link: "/#about" }
+        { name: "Catégories", link: "/#categories" },
+        { name: "Contact", link: "#contact" },
     ];
 
     const handleSearch = (e: React.FormEvent) => {
@@ -21,8 +22,8 @@ function Header() {
     };
 
     return (
-        <header>
-            <nav className="flex items-center justify-between px-6 py-4 bg-white/80 backdrop-blur-md shadow-sm w-full fixed top-0 z-50">
+        <header className="sticky top-0 z-50">
+            <nav className="flex items-center justify-between px-6 py-4 bg-white/90 backdrop-blur-md shadow-sm w-full">
                 {/* Logo */}
                 <Link href={"/"}>
                     <div className="flex items-center gap-2">
@@ -70,26 +71,32 @@ function Header() {
                 {/* Mobile Menu Button */}
                 <div className="md:hidden flex items-center gap-4">
                     <button
-                        className="text-2xl text-gray-700 active:text-green-700 transition"
+                        aria-label="Ouvrir le menu"
+                        className="text-gray-700 active:text-green-700 transition p-1"
                         onClick={() => setOpen(!open)}
                     >
-                        <i className="fa-solid fa-bars"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
                     </button>
                 </div>
             </nav>
 
             {/* Mobile Menu */}
             <div
-                className={`md:hidden z-[60] flex flex-col px-6 w-full bg-white fixed left-0 top-0 transition-all duration-300 overflow-hidden shadow-lg ${
+                className={`md:hidden z-[60] flex flex-col px-6 w-full bg-white absolute left-0 top-full transition-all duration-300 overflow-hidden shadow-lg ${
                     open ? "h-auto py-6" : "h-0 py-0"
                 }`}
             >
                 <div className="flex justify-end mb-6">
                     <button
-                        className="text-3xl text-gray-700 active:text-green-700 transition"
+                        aria-label="Fermer le menu"
+                        className="text-gray-700 active:text-green-700 transition p-1"
                         onClick={() => setOpen(false)}
                     >
-                        <i className="fa-solid fa-xmark"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
                     </button>
                 </div>
                 

@@ -21,29 +21,30 @@ function Presentation({ article }: { article: Article }) {
   };
 
   return (
-    <div className="w-full flex flex-col lg:flex-row gap-12 bg-white rounded-2xl p-6 md:p-10 shadow-sm border border-gray-100">
-      {/* Left Column - Images */}
-      <div className="w-full lg:w-1/2 flex flex-col items-center">
+    <div className="w-full flex flex-col gap-6 bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 min-w-0">
+      {/* Top - Gallery full width */}
+      <div className="w-full">
         <Carousel images={[article.thumbnail, ...(article.screenshots || [])]} />
       </div>
 
-      {/* Right Column - Details */}
-      <div className="w-full lg:w-1/2 flex flex-col justify-start text-left">
-        <h2 className="text-3xl font-extrabold text-gray-900 mb-4 leading-tight">
+      {/* Under gallery - Title / price / stock */}
+      <div className="w-full flex flex-col text-left">
+        <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-3 leading-tight">
           {article.title}
         </h2>
 
-        <div className="flex items-end gap-3 mb-6">
-          <span className="text-4xl font-extrabold text-green-700">{article.price} DZD</span>
+        <div className="flex items-end gap-3 mb-5">
+          <span className="text-3xl md:text-4xl font-extrabold text-green-700">{article.price} DZD</span>
           {article.oldPrice && (
             <span className="text-xl text-gray-400 line-through mb-1">{article.oldPrice} DZD</span>
           )}
-          <span className="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full mb-2 ml-4">
+          <span className="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full mb-2 ml-auto">
             En stock
           </span>
         </div>
 
-        <div className="text-gray-600 leading-relaxed mb-8 bg-gray-50 p-5 rounded-xl border border-gray-100" style={{ whiteSpace: "pre-line" }}>
+        {/* Description under image (was side column competing with order form) */}
+        <div className="text-gray-600 leading-relaxed mb-6 bg-gray-50 p-5 rounded-xl border border-gray-100" style={{ whiteSpace: "pre-line" }}>
           {article.description}
         </div>
 

@@ -46,8 +46,8 @@ async function ArticlePage({ params }: Props) {
     }
 
     return (
-        <div className="min-h-screen pt-20 flex flex-col max-w-7xl mx-auto">
-            <div className="px-4 mt-2">
+        <div className="flex flex-col max-w-[1600px] mx-auto">
+            <div className="px-4 md:px-8 mt-6">
                 <Breadcrumbs 
                     items={[
                         { label: "Boutique", href: "/articles" }, 
@@ -55,7 +55,9 @@ async function ArticlePage({ params }: Props) {
                     ]} 
                 />
             </div>
-            <div className="flex-grow p-4 gap-8 flex flex-col lg:flex-row">
+            {/* 2-col COD layout: product story (fluid) + sticky order panel (400-440px).
+                Was flex-row with 3 visual columns (image | info | form) squeezed by sidebar. */}
+            <div className="flex-grow p-4 md:p-8 pb-16 gap-6 lg:gap-8 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_440px] items-start">
                 <Presentation article={article} />
                 <OrderCard article={article} />
             </div>

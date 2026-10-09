@@ -117,11 +117,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             )}
             
             {logged && (
-                <div className="flex h-screen overflow-hidden bg-gray-50">
+                <div className="flex flex-col md:flex-row h-screen overflow-hidden bg-gray-50">
                     {/* Mobile top bar */}
                     <div className="md:hidden flex items-center justify-between p-4 bg-white border-b shrink-0">
-                        <span className="font-bold text-lg">Dashboard</span>
-                        <button onClick={() => setSidebarOpen(true)} className="p-2">
+                        <span className="font-bold text-lg truncate">Dashboard</span>
+                        <button onClick={() => setSidebarOpen(true)} className="p-2 shrink-0" aria-label="Ouvrir menu">
                             <i className="fa-solid fa-bars"></i>
                         </button>
                     </div>
@@ -191,7 +191,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     </aside>
 
                     {/* Main content */}
-                    <main className="flex-1 overflow-y-auto p-4 md:p-8">
+                    <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-8 min-w-0">
                         {children}
                     </main>
                 </div>

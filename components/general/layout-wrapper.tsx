@@ -1,36 +1,29 @@
 "use client";
 import Header from "./header";
 import Footer from "./footer";
-import Sidebar from "../sidebar/sidebar";
-import Topbar from "./topbar";
 import { usePathname } from "next/navigation";
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const isDashboard = pathname?.startsWith('/dashboard');
-    const isShopPage = pathname === '/articles' || pathname?.startsWith('/articles/') || pathname === '/cart' || pathname === '/orders';
-    const showSidebar = isDashboard || isShopPage;
+    // Dashboard owns its own chrome (sidebar + content in app/dashboard/layout.tsx).
+    // Rendering another Sidebar/Topbar here caused the double-sidebar + squeezed
+    // stat cards. Bypass entirely for /dashboard.
+    if (isDashboard) {
+        return <>{children}</>;
+    }
 
     return (
-        <div className="min-h-screen bg-gray-50 flex w-full overflow-hidden">
-            {showSidebar && <Sidebar />}
-            
-            <div className="flex-1 flex flex-col h-screen overflow-y-auto min-w-0">
-                {!isDashboard && !isShopPage && (
-                    <header>
-                        <Header />
-                    </header>
-                )}
-                {showSidebar && <Topbar />}
-                <main className={`flex-1 relative ${(!isDashboard && !isShopPage) ? 'pt-20' : ''}`}>
-                    {children}
-                </main>
-                {!isDashboard && !isShopPage && (
-                    <footer>
-                        <Footer />
-                    </footer>
-                )}
-            </div>
+        <div className="min-h-screen bg-gray-50 flex flex-col w-full">
+            <header>
+                <Header />
+            </header>
+            <main className="flex-1 min-w-0 overflow-x-clip">
+                {children}
+            </main>
+            <footer>
+                <Footer />
+            </footer>
         </div>
     );
 }

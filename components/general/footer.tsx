@@ -3,8 +3,8 @@ import Link from "next/link";
 function Footer() {
 
     return (
-        <footer className="bg-[#0b2416] text-white text-sm pt-12 pb-6" id="contact">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <footer className="bg-[#0b2416] text-white text-sm pt-12 pb-6 scroll-mt-24" id="contact">
+            <div className="max-w-[1600px] mx-auto px-4 sm:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
                     
                     {/* Column 1: Store Info */}

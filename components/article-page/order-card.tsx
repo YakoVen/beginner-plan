@@ -123,66 +123,96 @@ function OrderCard({ article }: { article: Article }) {
   // configured price is the fallback when the gateway is unreachable.
   const deliveryFee = quotedFee ?? delivery_price;
   const total = article.price * amount + deliveryFee;
+  const phoneDigits = phone.replace(/\D/g, "");
+  const phoneValid = /^0[5-7][0-9]{8}$/.test(phoneDigits);
 
   return (
-    <div className="flex-grow lg:w-2/5 p-6 bg-white shadow-lg rounded-2xl flex flex-col gap-6">
-      <div className="text-xl py-3 px-4 bg-blue-50 text-blue-800 font-semibold rounded-xl border border-blue-100 flex items-center justify-between">
-        <span>Prix unitaire:</span>
-        <span className="font-bold">{article.price} DZD</span>
+    <div className="w-full lg:w-[400px] xl:w-[440px] shrink-0 lg:sticky lg:top-24 self-start p-6 md:p-7 bg-white shadow-xl rounded-2xl flex flex-col gap-5 border-2 border-blue-100">
+      {/* COD header — price + trust */}
+      <div className="rounded-xl border border-blue-100 bg-gradient-to-br from-blue-50 to-blue-100/50 p-4">
+        <div className="flex items-center justify-between gap-3">
+          <span className="text-sm font-medium text-blue-900">Prix unitaire:</span>
+          <span className="font-extrabold text-xl text-blue-800 whitespace-nowrap">{article.price} DZD</span>
+        </div>
+        <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+          <span className="inline-flex items-center gap-1 bg-white px-2.5 py-1 rounded-full font-semibold text-green-700 border border-green-200">
+            <i className="fa-solid fa-money-bill-wave"></i> Paiement à la livraison
+          </span>
+          <span className="inline-flex items-center gap-1 bg-white px-2.5 py-1 rounded-full font-semibold text-blue-700 border border-blue-200">
+            <i className="fa-solid fa-phone"></i> Confirmation par téléphone
+          </span>
+        </div>
       </div>
 
+      <h3 className="text-lg font-extrabold text-gray-900 -mb-1">Informations de livraison</h3>
+
       <div className="space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Nom</label>
+          <label className="block text-sm font-semibold text-gray-800 mb-1.5">Nom *</label>
           <InputText
-            className="p-3 w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+            className="p-3 w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow text-base"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            placeholder="Ex. Benali"
+            autoComplete="family-name"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Prénom</label>
+          <label className="block text-sm font-semibold text-gray-800 mb-1.5">Prénom *</label>
           <InputText
-            className="p-3 w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+            className="p-3 w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow text-base"
             value={secname}
             onChange={(e) => setSecName(e.target.value)}
+            placeholder="Ex. Yacine"
+            autoComplete="given-name"
           />
+        </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Téléphone</label>
+          <label className="block text-sm font-semibold text-gray-800 mb-1.5">Téléphone *</label>
+          <div className="relative">
           <InputText
-            className="p-3 w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+            className={`p-3 w-full border rounded-xl focus:ring-2 transition-shadow text-base pr-10 ${phone.length === 0 ? 'border-gray-300 focus:ring-blue-500 focus:border-blue-500' : phoneValid ? 'border-green-500 focus:ring-green-500 focus:border-green-500 bg-green-50/30' : 'border-red-400 focus:ring-red-500 focus:border-red-500 bg-red-50/30'}`}
             type="tel"
             inputMode="numeric"
             placeholder="0551234567"
             pattern="0[5-7][0-9]{8}"
             title="Numéro algérien : 05, 06 ou 07 suivi de 8 chiffres"
             value={phone}
-            onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
+            onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+            autoComplete="tel"
           />
-          <p className="text-xs text-gray-500 mt-1">Format 05/06/07 + 8 chiffres.</p>
+          {phone.length > 0 && (
+            <span className={`absolute right-3 top-1/2 -translate-y-1/2 text-lg ${phoneValid ? 'text-green-600' : 'text-red-400'}`}>
+              <i className={`fa-solid ${phoneValid ? 'fa-circle-check' : 'fa-circle-exclamation'}`}></i>
+            </span>
+          )}
+          </div>
+          <p className={`text-xs mt-1.5 ${phone.length > 0 && !phoneValid ? 'text-red-600 font-medium' : 'text-gray-500'}`}>Format 05/06/07 + 8 chiffres. Le transporteur vous appellera sur ce numéro.</p>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Wilaya</label>
+          <label className="block text-sm font-semibold text-gray-800 mb-1.5">Wilaya *</label>
           <Dropdown
             value={wilaya}
-            onChange={(e) => setWilaya(e.value)}
+            onChange={(e) => { setWilaya(e.value); setCommune(null); }}
             options={wilaya_data}
             optionLabel="name"
-            placeholder="Wilaya"
-            className="w-full border border-gray-300 rounded-xl flex items-center"
+            filter filterPlaceholder="Rechercher wilaya..."
+            placeholder="Sélectionnez votre wilaya"
+            className="w-full border border-gray-300 rounded-xl flex items-center text-base"
             pt={{
-              input: { className: 'p-3' },
+              input: { className: 'p-3 text-base' },
               trigger: { className: 'w-12 flex items-center justify-center' }
             }}
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Commune</label>
+          <label className="block text-sm font-semibold text-gray-800 mb-1.5">Commune *</label>
           <Dropdown
             value={commune}
             onChange={(e) => setCommune(e.value)}
@@ -190,29 +220,34 @@ function OrderCard({ article }: { article: Article }) {
               (c) => wilaya && c.wilaya_id === wilaya.id
             )}
             optionLabel="name"
-            placeholder="Commune"
-            className="w-full border border-gray-300 rounded-xl flex items-center"
+            filter filterPlaceholder="Rechercher commune..."
+            placeholder={wilaya ? "Sélectionnez votre commune" : "Choisissez d'abord la wilaya"}
+            className="w-full border border-gray-300 rounded-xl flex items-center text-base"
             disabled={!wilaya}
             pt={{
-              input: { className: 'p-3' },
+              input: { className: 'p-3 text-base' },
               trigger: { className: 'w-12 flex items-center justify-center' }
             }}
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Quantité</label>
-          <div className="flex items-center gap-4 mt-2">
+        <div className="flex items-center justify-between gap-4 bg-gray-50 p-3 rounded-xl border border-gray-100">
+          <label className="text-sm font-semibold text-gray-800">Quantité *</label>
+          <div className="flex items-center gap-3">
             <button 
+              type="button"
+              aria-label="Diminuer quantité"
               onClick={() => setAmount(prev => Math.max(1, prev - 1))}
-              className="w-12 h-12 flex items-center justify-center border border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+              className="w-11 h-11 flex items-center justify-center border border-gray-300 rounded-xl bg-white hover:bg-gray-100 active:scale-95 transition"
             >
               <i className="fa-solid fa-minus"></i>
             </button>
-            <span className="text-xl font-bold w-8 text-center">{amount}</span>
+            <span className="text-xl font-extrabold w-8 text-center tabular-nums">{amount}</span>
             <button 
+              type="button"
+              aria-label="Augmenter quantité"
               onClick={() => setAmount(prev => Math.min(10, prev + 1))}
-              className="w-12 h-12 flex items-center justify-center border border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+              className="w-11 h-11 flex items-center justify-center border border-gray-300 rounded-xl bg-white hover:bg-gray-100 active:scale-95 transition"
             >
               <i className="fa-solid fa-plus"></i>
             </button>
@@ -221,30 +256,39 @@ function OrderCard({ article }: { article: Article }) {
       </div>
 
       {/* Total Card */}
-      <div className="bg-gray-50 p-5 rounded-xl border border-gray-100 mt-2">
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-gray-600">Sous-total</span>
-          <span className="font-semibold">{article.price * amount} DZD</span>
+      <div className="bg-gray-900 text-white p-5 rounded-xl mt-1 shadow-inner">
+        <div className="flex justify-between items-center mb-2 text-sm">
+          <span className="text-gray-300">Sous-total ({amount} article{amount > 1 ? 's' : ''})</span>
+          <span className="font-semibold tabular-nums">{article.price * amount} DZD</span>
         </div>
-        <div className="flex justify-between items-center mb-3">
-          <span className="text-gray-600">Frais de livraison</span>
-          <span className="font-semibold">{deliveryFee} DZD</span>
+        <div className="flex justify-between items-center mb-3 text-sm">
+          <span className="text-gray-300">Frais de livraison {wilaya ? `• ${wilaya.name}` : ''}</span>
+          <span className="font-semibold tabular-nums">{deliveryFee} DZD</span>
         </div>
-        <div className="flex justify-between items-center pt-3 border-t border-gray-200">
-          <span className="font-bold text-lg">Total</span>
-          <span className="font-bold text-2xl text-blue-600">{total} DZD</span>
+        <div className="flex justify-between items-center pt-3 border-t border-white/15">
+          <span className="font-bold text-base">Total à payer</span>
+          <span className="font-extrabold text-2xl text-green-400 tabular-nums">{total} DZD</span>
         </div>
       </div>
 
       {/* Submit */}
-      <div className="mt-2">
+      <div className="mt-1">
         <button
-          disabled={incomplete}
+          disabled={incomplete || saving}
           onClick={confirmOrder}
-          className="disabled:opacity-50 disabled:cursor-not-allowed w-full bg-blue-600 text-white text-lg font-bold py-4 rounded-xl hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
+          className="disabled:opacity-50 disabled:cursor-not-allowed w-full bg-blue-600 text-white text-lg font-extrabold py-4 rounded-xl hover:bg-blue-700 active:scale-[0.99] transition shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
         >
-          Commander !
+          <i className="fa-solid fa-bag-shopping"></i>
+          Commander • {total} DZD
         </button>
+        {incomplete && (
+          <p className="text-xs text-center text-gray-500 mt-2">Remplissez nom, téléphone valide, wilaya, commune pour commander.</p>
+        )}
+        <div className="mt-3 grid grid-cols-3 gap-2 text-center text-[11px] text-gray-600">
+          <div className="bg-gray-50 rounded-lg py-2 px-1 border border-gray-100"><i className="fa-solid fa-truck-fast block text-sm mb-1 text-green-700"></i>58 wilayas</div>
+          <div className="bg-gray-50 rounded-lg py-2 px-1 border border-gray-100"><i className="fa-solid fa-cash-register block text-sm mb-1 text-green-700"></i>Cash à réception</div>
+          <div className="bg-gray-50 rounded-lg py-2 px-1 border border-gray-100"><i className="fa-solid fa-phone-volume block text-sm mb-1 text-green-700"></i>On vous appelle</div>
+        </div>
       </div>
       
       {error && (

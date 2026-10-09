@@ -24,7 +24,7 @@ function Carousel({ images }: CarouselProps) {
     <div className="w-full">
       <div className="p-3 sm:p-5 border rounded-xl border-gray-300 w-full">
         {/* Main image */}
-        <div className="rounded-xl overflow-hidden h-56 sm:h-72 md:h-96 w-full bg-slate-400 relative">
+        <div className="rounded-xl overflow-hidden h-72 sm:h-96 md:h-[440px] w-full bg-slate-100 relative">
           {images.length > 0 ? (
             <>
               {imageLoading && (
