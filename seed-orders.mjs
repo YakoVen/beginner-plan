@@ -44,6 +44,8 @@ const generateOrders = (count) => {
     // Random date over the last 30 days
     const date = new Date(now.getTime() - randomInt(0, 30) * 24 * 60 * 60 * 1000 - randomInt(0, 86400000));
     const name = names[randomInt(0, names.length - 1)];
+    const quantity = randomInt(1, 4);
+    const total = product.price * quantity;
     const order = {
       id: "ord_" + Math.random().toString(36).substring(2, 11),
       date: date.toISOString(),
@@ -55,7 +57,9 @@ const generateOrders = (count) => {
         price: product.price,
         thumb: product.thumb
       },
-      quantity: randomInt(1, 4),
+      quantity: quantity,
+      subtotal: total,
+      total: total,
       address: randomInt(1, 200) + " Rue de " + cities[randomInt(0, cities.length - 1)],
       state: randomInt(0, 3) // Assuming 0-3 are typical order states (pending, processing, shipped, delivered)
     };

@@ -118,9 +118,17 @@ const articles = [
 
 async function seed() {
   let successCount = 0;
-  for (const item of articles) {
+  const now = Date.now();
+  for (let i = 0; i < articles.length; i++) {
+    const item = articles[i];
     try {
-      await setDoc(doc(db, "articles", item.id), item);
+      // Stagger createdAt so newest-first ordering is deterministic.
+      // Uses setDoc merge so re-seeding never wipes dashboard edits.
+      await setDoc(
+        doc(db, "articles", item.id),
+        { ...item, createdAt: item.createdAt ?? new Date(now - i * 86400000).toISOString() },
+        { merge: true }
+      );
       successCount++;
       console.log(`Saved ${item.title}`);
     } catch (e) {

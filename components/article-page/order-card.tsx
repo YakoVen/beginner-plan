@@ -24,6 +24,33 @@ function OrderCard({ article }: { article: Article }) {
   const [orderId, setOrderId] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false);
 
+  // Live delivery quote for the selected wilaya, with the flat configured
+  // price as fallback so the form never blocks on a third party.
+  const [quotedFee, setQuotedFee] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!wilaya) {
+      setQuotedFee(null);
+      return;
+    }
+    let cancelled = false;
+    fetch("/api/shipping/quote", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ wilayaCode: Number(wilaya.code) }),
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!cancelled && data && Number.isFinite(data.deliveryFee)) {
+          setQuotedFee(data.deliveryFee);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [wilaya]);
+
   // Reset form
   const resetForm = () => {
     setName("");
@@ -65,6 +92,8 @@ function OrderCard({ article }: { article: Article }) {
         name: name + " " + secname,
         phone,
         address: wilaya.name + ", " + commune.name,
+        wilayaCode: Number(wilaya.code),
+        communeName: commune.name,
         articleId: article.id,
         articleTitle: article.title,
         articlePrice: article.price,
@@ -90,8 +119,10 @@ function OrderCard({ article }: { article: Article }) {
     }
   };
 
-  // Calculate total
-  const total = article.price * amount + delivery_price;
+  // Calculate total. The quoted courier fee wins when available; the flat
+  // configured price is the fallback when the gateway is unreachable.
+  const deliveryFee = quotedFee ?? delivery_price;
+  const total = article.price * amount + deliveryFee;
 
   return (
     <div className="flex-grow lg:w-2/5 p-6 bg-white shadow-lg rounded-2xl flex flex-col gap-6">
@@ -124,9 +155,14 @@ function OrderCard({ article }: { article: Article }) {
           <InputText
             className="p-3 w-full border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
             type="tel"
+            inputMode="numeric"
+            placeholder="0551234567"
+            pattern="0[5-7][0-9]{8}"
+            title="Numéro algérien : 05, 06 ou 07 suivi de 8 chiffres"
             value={phone}
             onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
           />
+          <p className="text-xs text-gray-500 mt-1">Format 05/06/07 + 8 chiffres.</p>
         </div>
 
         <div>
@@ -192,7 +228,7 @@ function OrderCard({ article }: { article: Article }) {
         </div>
         <div className="flex justify-between items-center mb-3">
           <span className="text-gray-600">Frais de livraison</span>
-          <span className="font-semibold">{delivery_price} DZD</span>
+          <span className="font-semibold">{deliveryFee} DZD</span>
         </div>
         <div className="flex justify-between items-center pt-3 border-t border-gray-200">
           <span className="font-bold text-lg">Total</span>
@@ -237,7 +273,7 @@ function OrderCard({ article }: { article: Article }) {
                 </div>
                 <div className="flex justify-between">
                   <span>Livraison:</span>
-                  <span>{delivery_price} dzd</span>
+                  <span>{deliveryFee} dzd</span>
                 </div>
                 <div className="flex justify-between font-bold text-lg pt-2">
                   <span>Total:</span>
